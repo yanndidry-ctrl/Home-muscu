@@ -10,20 +10,19 @@
             --bg: #0f172a;
             --card: #111827;
             --accent: #22c55e;
-            --accent-soft: rgba(34, 197, 94, 0.15);
             --text-main: #e5e7eb;
             --text-soft: #9ca3af;
             --border: #1f2937;
-        }
-
-        * {
-            box-sizing: border-box;
+            --danger: #ef4444;
+            --warn: #f59e0b;
+            --ok: #22c55e;
+            --mid: #f97316;
+            --current: #3b82f6;
         }
 
         body {
             margin: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-                "Segoe UI", sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             background: radial-gradient(circle at top, #1f2937 0, #020617 55%);
             color: var(--text-main);
             padding: 16px;
@@ -42,55 +41,24 @@
         .title {
             font-size: 26px;
             font-weight: 700;
-            letter-spacing: 0.03em;
         }
 
         .subtitle {
             font-size: 13px;
             color: var(--text-soft);
-            margin-top: 4px;
-        }
-
-        .day-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 12px;
-            border-radius: 999px;
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid var(--border);
-            margin-top: 10px;
-            font-size: 12px;
-            color: var(--text-soft);
-        }
-
-        .dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 999px;
-            background: var(--accent);
-            box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
         }
 
         .card {
             background: rgba(15, 23, 42, 0.96);
             border-radius: 18px;
-            padding: 16px 14px;
+            padding: 16px;
             border: 1px solid var(--border);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
             margin-bottom: 16px;
         }
 
         .section-title {
             font-size: 14px;
             text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: var(--text-soft);
-            margin-bottom: 10px;
-        }
-
-        .intro-text {
-            font-size: 13px;
             color: var(--text-soft);
             margin-bottom: 10px;
         }
@@ -101,14 +69,13 @@
             margin-bottom: 8px;
         }
 
-        .input-row input {
+        .input-row input, .input-row select {
             flex: 1;
             padding: 8px 10px;
             border-radius: 999px;
             border: 1px solid var(--border);
             background: #020617;
             color: var(--text-main);
-            font-size: 14px;
         }
 
         .input-row button {
@@ -118,45 +85,20 @@
             background: var(--accent);
             color: #022c22;
             font-weight: 600;
-            font-size: 13px;
-        }
-
-        .small-note {
-            font-size: 12px;
-            color: var(--text-soft);
-        }
-
-        .highlight {
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        .level-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid var(--border);
-            font-size: 12px;
-            color: var(--text-soft);
-            margin-bottom: 10px;
         }
 
         .exercise {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .exercise h2 {
             margin: 0 0 6px 0;
-            font-size: 18px;
+            font-size: 20px;
         }
 
         .exercise p {
             margin: 0 0 10px 0;
             color: var(--text-soft);
-            font-size: 14px;
         }
 
         iframe {
@@ -164,33 +106,63 @@
             height: 200px;
             border-radius: 12px;
             border: none;
-            margin-bottom: 12px;
-        }
-
-        .timer {
-            text-align: center;
             margin-top: 10px;
         }
 
-        .timer-display {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 10px;
+        /* TIMER */
+        .timer-block {
+            text-align: center;
+            margin-bottom: 12px;
+            padding: 12px;
+            border-radius: 14px;
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid var(--accent);
         }
 
-        .timer button {
-            padding: 10px 20px;
+        .timer-display {
+            font-size: 42px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .timer-btn {
+            padding: 10px 18px;
             border-radius: 999px;
             border: none;
             background: var(--accent);
             color: #022c22;
             font-weight: 600;
-            margin: 5px;
+            margin: 4px;
         }
 
-        .session-footer {
-            margin-top: 10px;
+        /* CALENDRIER */
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .day {
+            width: 100%;
+            padding: 10px 0;
+            border-radius: 10px;
             text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .d0 { background: var(--danger); }
+        .d1 { background: var(--warn); }
+        .d2 { background: var(--mid); }
+        .d3 { background: var(--ok); }
+        .current { outline: 2px solid var(--current); }
+        .future { background: #1e293b; color: var(--text-soft); }
+
+        .session-footer {
+            text-align: center;
+            margin-top: 20px;
         }
 
         .session-footer button {
@@ -199,218 +171,67 @@
             border: 1px solid var(--border);
             background: rgba(15, 23, 42, 0.9);
             color: var(--text-main);
-            font-size: 13px;
-        }
-
-        .session-footer p {
-            font-size: 11px;
-            color: var(--text-soft);
-            margin-top: 6px;
         }
     </style>
 </head>
 
 <body>
     <div class="app">
+
         <header class="header">
             <div class="title">Programme Home Muscu</div>
-            <div class="subtitle">Séance évolutive à partir de ton max pompes.</div>
-            <div class="day-pill">
-                <span class="dot"></span>
-                <span id="sessionLabel">Séance du jour · Niveau 1</span>
-            </div>
+            <div class="subtitle">Basé sur ton max + difficulté + progression + calendrier</div>
         </header>
 
-        <!-- Carte de départ : question sur le max de pompes -->
+        <!-- MAX POMPES + DIFFICULTÉ -->
         <section class="card">
             <div class="section-title">Point de départ</div>
-            <p class="intro-text">
-                On construit le programme à partir de ton
-                <span class="highlight">max de pompes sur une seule série</span>.
-            </p>
 
             <div class="input-row">
-                <input type="number" id="maxPompesInput" placeholder="Ton max de pompes (ex : 25)">
-                <button onclick="saveMaxPompes()">Valider</button>
+                <input type="number" id="maxPompesInput" placeholder="Ton max de pompes">
             </div>
 
-            <p class="small-note" id="maxPompesInfo">
-                Entre ton max une fois. Il sera mémorisé sur cet appareil.
+            <div class="input-row">
+                <select id="difficultySelect">
+                    <option value="0.5">Facile (50%)</option>
+                    <option value="0.6">Normal (60%)</option>
+                    <option value="0.7">Difficile (70%)</option>
+                </select>
+                <button onclick="saveSettings()">OK</button>
+            </div>
+
+            <p id="settingsInfo" style="font-size:12px;color:var(--text-soft);">
+                Configure ton niveau une fois. Tout sera mémorisé.
             </p>
         </section>
 
-        <!-- Carte principale : séance avec vidéos + reps calculées + progression -->
+        <!-- SEANCE -->
         <main class="card">
             <div class="section-title">Séance du jour</div>
 
-            <div class="level-pill">
-                <span>Progression basée sur ton max ·</span>
-                <span id="levelLabel">Niveau 1</span>
-            </div>
+            <p style="font-size:13px;color:var(--text-soft);margin-bottom:20px;">
+                Niveau progression : <span id="levelLabel">1</span>
+            </p>
 
+            <!-- EXERCICE 1 : POMPES -->
             <div class="exercise">
                 <h2>Pompes</h2>
                 <p id="pompesReps">4 séries · 12 répétitions</p>
+
+                <div class="timer-block">
+                    <div class="timer-display" id="timer1">60</div>
+                    <button class="timer-btn" onclick="startTimer(1)">Start</button>
+                    <button class="timer-btn" onclick="resetTimer(1)">Reset</button>
+                </div>
+
                 <iframe src="https://www.youtube.com/embed/_l3ySVKYVJ8" allowfullscreen></iframe>
             </div>
 
+            <!-- EXERCICE 2 : SQUATS -->
             <div class="exercise">
                 <h2>Squats</h2>
                 <p id="squatsReps">4 séries · 15 répétitions</p>
-                <iframe src="https://www.youtube.com/embed/aclHkVaku9U" allowfullscreen></iframe>
-            </div>
 
-            <div class="exercise">
-                <h2>Gainage</h2>
-                <p id="gainageReps">3 séries · 1 minute</p>
-                <iframe src="https://www.youtube.com/embed/pSHjTRCQxIw" allowfullscreen></iframe>
-
-                <div class="timer">
-                    <div class="timer-display" id="display">60</div>
-                    <button onclick="startTimer()">Start</button>
-                    <button onclick="resetTimer()">Reset</button>
-                </div>
-            </div>
-
-            <div class="session-footer">
-                <button onclick="finishSession()">Séance terminée</button>
-                <p id="sessionInfo">
-                    Quand tu termines une séance, le niveau augmente et les reps s’ajustent légèrement.
-                </p>
-            </div>
-        </main>
-    </div>
-
-    <script>
-        // ----- Minuteur gainage -----
-        let time = 60;
-        let interval;
-
-        function startTimer() {
-            clearInterval(interval);
-            interval = setInterval(() => {
-                if (time > 0) {
-                    time--;
-                    document.getElementById("display").innerText = time;
-                } else {
-                    clearInterval(interval);
-                }
-            }, 1000);
-        }
-
-        function resetTimer() {
-            clearInterval(interval);
-            time = 60;
-            document.getElementById("display").innerText = time;
-        }
-
-        // ----- Max pompes + progression -----
-        function saveMaxPompes() {
-            const input = document.getElementById("maxPompesInput");
-            const value = parseInt(input.value, 10);
-
-            if (!value || value <= 0) {
-                alert("Entre un nombre valide de pompes.");
-                return;
-            }
-
-            localStorage.setItem("maxPompes", value.toString());
-            document.getElementById("maxPompesInfo").innerText =
-                "Max enregistré : " + value + " pompes. Le programme s’adapte automatiquement.";
-            updateProgram();
-        }
-
-        function getMaxPompes() {
-            const stored = localStorage.getItem("maxPompes");
-            const max = stored ? parseInt(stored, 10) : null;
-            return max && max > 0 ? max : null;
-        }
-
-        function getLevel() {
-            const stored = localStorage.getItem("niveauSeance");
-            const level = stored ? parseInt(stored, 10) : 1;
-            return level < 1 ? 1 : level;
-        }
-
-        function setLevel(level) {
-            localStorage.setItem("niveauSeance", level.toString());
-        }
-
-        function finishSession() {
-            let level = getLevel();
-            level += 1;
-            setLevel(level);
-            document.getElementById("sessionInfo").innerText =
-                "Séance validée. Tu es maintenant au niveau " + level + ".";
-            updateProgram();
-        }
-
-        function updateProgram() {
-            const max = getMaxPompes();
-            const level = getLevel();
-
-            // Label niveau
-            document.getElementById("levelLabel").innerText = "Niveau " + level;
-            document.getElementById("sessionLabel").innerText =
-                "Séance du jour · Niveau " + level;
-
-            // Si pas de max, on reste sur un programme par défaut
-            if (!max) {
-                document.getElementById("pompesReps").innerText =
-                    "4 séries · 12 répétitions (défaut)";
-                document.getElementById("squatsReps").innerText =
-                    "4 séries · 15 répétitions";
-                document.getElementById("gainageReps").innerText =
-                    "3 séries · 1 minute";
-                return;
-            }
-
-            // Progression simple :
-            // base = 70% du max, +2 reps par niveau
-            const basePompes = Math.max(5, Math.round(max * 0.7));
-            const pompesReps = basePompes + (level - 1) * 2;
-
-            // Squats : on fait un peu évoluer aussi
-            const baseSquats = 15;
-            const squatsReps = baseSquats + (level - 1) * 2;
-
-            // Gainage : on augmente de 5 secondes par niveau
-            const baseGainage = 60;
-            const gainageSeconds = baseGainage + (level - 1) * 5;
-            const gainageMinutes = Math.floor(gainageSeconds / 60);
-            const gainageRest = gainageSeconds % 60;
-            const gainageText =
-                gainageMinutes > 0
-                    ? gainageMinutes + " min " + (gainageRest > 0 ? gainageRest + " s" : "")
-                    : gainageSeconds + " s";
-
-            document.getElementById("pompesReps").innerText =
-                "4 séries · " + pompesReps + " répétitions (≈ " + Math.round((pompesReps / max) * 100) + "% de ton max)";
-            document.getElementById("squatsReps").innerText =
-                "4 séries · " + squatsReps + " répétitions";
-            document.getElementById("gainageReps").innerText =
-                "3 séries · " + gainageText;
-
-            // On synchronise aussi le minuteur sur la durée de gainage
-            time = gainageSeconds;
-            document.getElementById("display").innerText = time;
-        }
-
-        // Init au chargement
-        (function init() {
-            const max = getMaxPompes();
-            const level = getLevel();
-
-            if (max) {
-                document.getElementById("maxPompesInput").value = max;
-                document.getElementById("maxPompesInfo").innerText =
-                    "Max actuel : " + max + " pompes. Le programme est basé dessus.";
-            }
-
-            document.getElementById("sessionInfo").innerText =
-                "Niveau actuel : " + level + ". Quand tu termines une séance, le niveau augmente et les reps s’ajustent.";
-            updateProgram();
-        })();
-    </script>
-</body>
-</html>
+                <div class="timer-block">
+                    <div class="timer-display" id="timer2">60</div>
+                   
