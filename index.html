@@ -234,4 +234,208 @@
 
                 <div class="timer-block">
                     <div class="timer-display" id="timer2">60</div>
-                   
+                    <button class="timer-btn" onclick="startTimer(2)">Start</button>
+                    <button class="timer-btn" onclick="resetTimer(2)">Reset</button>
+                </div>
+
+                <iframe src="https://www.youtube.com/embed/aclHkVaku9U" allowfullscreen></iframe>
+            </div>
+
+            <!-- EXERCICE 3 : GAINAGE -->
+            <div class="exercise">
+                <h2>Gainage</h2>
+                <p id="gainageReps">3 séries · 1 minute</p>
+
+                <div class="timer-block">
+                    <div class="timer-display" id="timer3">60</div>
+                    <button class="timer-btn" onclick="startTimer(3)">Start</button>
+                    <button class="timer-btn" onclick="resetTimer(3)">Reset</button>
+                </div>
+
+                <iframe src="https://www.youtube.com/embed/pSHjTRCQxIw" allowfullscreen></iframe>
+            </div>
+
+            <div class="session-footer">
+                <button onclick="finishSession()">Séance terminée</button>
+            </div>
+        </main>
+
+        <!-- CALENDRIER -->
+        <section class="card">
+            <div class="section-title">Calendrier (objectif : 3 séances / semaine)</div>
+
+            <p style="font-size:13px;color:var(--text-soft);">
+                Cette semaine : <span id="weekCount">0</span> / 3 séances
+            </p>
+
+            <div id="calendar" class="calendar"></div>
+        </section>
+
+    </div>
+
+    <script>
+        /* ------------------ TIMERS ------------------ */
+        let timers = {
+            1: { time: 60, interval: null },
+            2: { time: 60, interval: null },
+            3: { time: 60, interval: null }
+        };
+
+        function startTimer(id) {
+            clearInterval(timers[id].interval);
+            timers[id].interval = setInterval(() => {
+                if (timers[id].time > 0) {
+                    timers[id].time--;
+                    document.getElementById("timer" + id).innerText = timers[id].time;
+                } else {
+                    clearInterval(timers[id].interval);
+                }
+            }, 1000);
+        }
+
+        function resetTimer(id) {
+            clearInterval(timers[id].interval);
+            timers[id].time = 60;
+            document.getElementById("timer" + id).innerText = timers[id].time;
+        }
+
+        /* ------------------ SETTINGS ------------------ */
+
+        function saveSettings() {
+            const max = parseInt(document.getElementById("maxPompesInput").value);
+            const diff = parseFloat(document.getElementById("difficultySelect").value);
+
+            if (!max || max <= 0) return alert("Entre un max valide");
+
+            localStorage.setItem("maxPompes", max);
+            localStorage.setItem("difficulty", diff);
+
+            document.getElementById("settingsInfo").innerText =
+                "Max : " + max + " pompes · Difficulté enregistrée";
+
+            updateProgram();
+        }
+
+        function getMaxPompes() {
+            const v = localStorage.getItem("maxPompes");
+            return v ? parseInt(v) : null;
+        }
+
+        function getDifficulty() {
+            const v = localStorage.getItem("difficulty");
+            return v ? parseFloat(v) : 0.6;
+        }
+
+        function getLevel() {
+            const v = localStorage.getItem("niveau");
+            return v ? parseInt(v) : 1;
+        }
+
+        function setLevel(lvl) {
+            localStorage.setItem("niveau", lvl);
+        }
+
+        /* ------------------ PROGRESSION ------------------ */
+
+        function finishSession() {
+            let lvl = getLevel();
+            lvl++;
+            setLevel(lvl);
+
+            saveTrainingDay();
+            updateProgram();
+            updateCalendar();
+        }
+
+        function updateProgram() {
+            const max = getMaxPompes();
+            const diff = getDifficulty();
+            const lvl = getLevel();
+
+            document.getElementById("levelLabel").innerText = lvl;
+
+            if (!max) return;
+
+            const base = Math.round(max * diff);
+            const pompes = base + (lvl - 1) * 2;
+            const squats = 15 + (lvl - 1) * 2;
+            const gainage = 60 + (lvl - 1) * 5;
+
+            document.getElementById("pompesReps").innerText =
+                "4 séries · " + pompes + " répétitions";
+
+            document.getElementById("squatsReps").innerText =
+                "4 séries · " + squats + " répétitions";
+
+            document.getElementById("gainageReps").innerText =
+                "3 séries · " + gainage + " secondes";
+
+            timers[1].time = gainage;
+            timers[2].time = gainage;
+            timers[3].time = gainage;
+
+            document.getElementById("timer1").innerText = gainage;
+            document.getElementById("timer2").innerText = gainage;
+            document.getElementById("timer3").innerText = gainage;
+        }
+
+        /* ------------------ CALENDRIER ------------------ */
+
+        function getWeekKey(date) {
+            const d = new Date(date);
+            const year = d.getFullYear();
+            const week = Math.ceil((((d - new Date(year,0,1)) / 86400000) + new Date(year,0,1).getDay()+1) / 7);
+            return year + "-W" + week;
+        }
+
+        function saveTrainingDay() {
+            const today = new Date();
+            const key = getWeekKey(today);
+
+            let history = JSON.parse(localStorage.getItem("trainingHistory") || "{}");
+            history[key] = (history[key] || 0) + 1;
+
+            localStorage.setItem("trainingHistory", JSON.stringify(history));
+        }
+
+        function updateCalendar() {
+            const history = JSON.parse(localStorage.getItem("trainingHistory") || "{}");
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+
+            const first = new Date(year, month, 1);
+            const last = new Date(year, month + 1, 0);
+
+            const cal = document.getElementById("calendar");
+            cal.innerHTML = "";
+
+            const todayKey = getWeekKey(now);
+            const weekCount = history[todayKey] || 0;
+            document.getElementById("weekCount").innerText = weekCount;
+
+            for (let d = 1; d <= last.getDate(); d++) {
+                const date = new Date(year, month, d);
+                const key = getWeekKey(date);
+
+                let count = history[key] || 0;
+
+                let cls = "day ";
+                if (date > now) cls += "future ";
+                else cls += "d" + Math.min(count, 3) + " ";
+
+                if (d === now.getDate()) cls += "current ";
+
+                const div = document.createElement("div");
+                div.className = cls;
+                div.innerText = d;
+                cal.appendChild(div);
+            }
+        }
+
+        updateProgram();
+        updateCalendar();
+    </script>
+
+</body>
+</html>
