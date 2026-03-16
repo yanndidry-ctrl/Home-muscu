@@ -1,229 +1,1038 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <title>HomeMuscu – Calibration</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Muscu</title>
   <style>
-    body { font-family: system-ui, -apple-system, sans-serif; margin: 20px; background:#0f172a; color:#e5e7eb; }
-    h1, h2 { color:#facc15; }
-    .card { background:#020617; border:1px solid #1f2937; border-radius:12px; padding:16px; margin-bottom:16px; max-width:480px; }
-    label { display:block; margin:8px 0 4px; }
-    input, select, button { width:100%; padding:10px; margin:4px 0 8px; border-radius:8px; border:1px solid #4b5563; background:#020617; color:#e5e7eb; }
-    button { cursor:pointer; background:#facc15; color:#020617; font-weight:600; border:none; }
-    button:disabled { background:#4b5563; cursor:not-allowed; }
-    .tag { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; margin-left:6px; background:#111827; border:1px solid #374151; }
-    .small { font-size:13px; color:#9ca3af; }
-    .highlight { color:#facc15; font-weight:600; }
-    .grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-    .pill-disabled { opacity:0.4; }
+    :root {
+      --bg: #020617;
+      --card: #0b1120;
+      --accent: #22c55e;
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --border: #1f2937;
+      --danger: #ef4444;
+      --warn: #f59e0b;
+      --ok: #22c55e;
+      --mid: #f97316;
+      --current: #3b82f6;
+      --work: #ef4444;
+      --rest: #22c55e;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 55%);
+      color: var(--text-main);
+      padding: 16px;
+    }
+
+    .app {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 10px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .input-row input,
+    .input-row select {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #020617;
+      color: var(--text-main);
+      font-size: 14px;
+    }
+
+    .input-row button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #022c22;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .exercise {
+      margin-bottom: 24px;
+    }
+
+    .exercise h2 {
+      margin: 0 0 2px 0;
+      font-size: 18px;
+    }
+
+    .modify-link {
+      font-size: 11px;
+      color: var(--text-soft);
+      cursor: pointer;
+      margin-bottom: 6px;
+    }
+
+    .exercise p {
+      margin: 0 0 8px 0;
+      color: var(--text-soft);
+      font-size: 13px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 190px;
+      border-radius: 12px;
+      border: none;
+      margin-top: 10px;
+    }
+
+    .timer-block {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #020617;
+      text-align: center;
+    }
+
+    .timer-label {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .timer-display {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .timer-display.work {
+      color: var(--work);
+    }
+
+    .timer-display.rest {
+      color: var(--rest);
+    }
+
+    .timer-btn {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #022c22;
+      font-weight: 600;
+      font-size: 12px;
+      margin: 2px;
+    }
+
+    .series-list {
+      margin-top: 8px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 8px;
+      background: #020617;
+    }
+
+    .series-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      margin-bottom: 6px;
+      background: #020617;
+      border: 1px solid transparent;
+      font-size: 13px;
+    }
+
+    .series-row.done {
+      border-color: var(--accent);
+      background: rgba(34, 197, 94, 0.08);
+    }
+
+    .series-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .series-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .series-btn {
+      flex: 1;
+      padding: 4px 6px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #020617;
+      color: var(--text-main);
+      font-size: 11px;
+    }
+
+    .series-input-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .series-input-row input {
+      flex: 1;
+      padding: 4px 6px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #020617;
+      color: var(--text-main);
+      font-size: 12px;
+    }
+
+    .series-input-row button {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #022c22;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .alt-panel {
+      margin: 6px 0 4px 0;
+      padding: 6px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #020617;
+      font-size: 12px;
+    }
+
+    .alt-panel button {
+      width: 100%;
+      margin-top: 4px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #020617;
+      color: var(--text-main);
+      font-size: 12px;
+    }
+
+    .session-footer {
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .session-footer button {
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      font-size: 14px;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .day {
+      width: 100%;
+      padding: 8px 0;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .d0 { background: var(--danger); }
+    .d1 { background: var(--warn); }
+    .d2 { background: var(--mid); }
+    .d3 { background: var(--ok); }
+    .future { background: #1e293b; color: var(--text-soft); }
+    .current { outline: 2px solid var(--current); }
+
+    .warmup-list {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin: 8px 0 10px 0;
+    }
+
+    .warmup-list li {
+      margin-bottom: 4px;
+    }
+
+    .warmup-btn {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #022c22;
+      font-weight: 600;
+      font-size: 14px;
+    }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+  <div class="app">
+    <header class="header">
+      <div class="title">Programme Home Muscu</div>
+      <div class="subtitle">Progression réelle, alternatives, timers, courbes</div>
+    </header>
 
-  <h1>HomeMuscu – Calibration</h1>
+    <!-- ÉCHAUFFEMENT -->
+    <section class="card" id="warmupCard">
+      <div class="section-title">Échauffement obligatoire</div>
+      <p style="font-size:13px;color:var(--text-soft);">
+        Avant de démarrer la séance, prends 1–2 minutes pour préparer tes articulations :
+      </p>
+      <ul class="warmup-list">
+        <li>Rotations de poignets (10–15 secondes dans chaque sens)</li>
+        <li>Quelques squats lents (5–10 répétitions, amplitude confortable)</li>
+        <li>Cercles d’épaules et mobilisation douce du dos</li>
+      </ul>
+      <button class="warmup-btn" onclick="validateWarmup()">J’ai fait mon échauffement</button>
+    </section>
 
-  <!-- ÉTAPE 1 : TEST MAX -->
-  <div class="card">
-    <h2>Étape 1 – Test de pompes max</h2>
-    <label for="maxPompes">Combien de pompes propres peux-tu faire en une série max ?</label>
-    <input type="number" id="maxPompes" min="0" max="200" placeholder="Ex : 50" />
-    <button id="validerMax">Valider mon niveau</button>
-    <p id="niveauTexte" class="small"></p>
-  </div>
+    <!-- PARAMÈTRES -->
+    <section class="card">
+      <div class="section-title">Point de départ</div>
+      <div class="input-row">
+        <input type="number" id="maxPompesInput" placeholder="Ton max de pompes">
+      </div>
+      <div class="input-row">
+        <select id="difficultySelect">
+          <option value="0.5">Facile (50%)</option>
+          <option value="0.6">Normal (60%)</option>
+          <option value="0.7">Difficile (70%)</option>
+        </select>
+        <button onclick="saveSettings()">OK</button>
+      </div>
+      <p id="settingsInfo" style="font-size:12px;color:var(--text-soft);">
+        Configure ton max et ta difficulté, tout sera mémorisé.
+      </p>
+    </section>
 
-  <!-- ÉTAPE 2 : DIFFICULTÉ -->
-  <div class="card" id="blocDifficulte" style="display:none;">
-    <h2>Étape 2 – Choix de la difficulté</h2>
-    <p class="small">Ton niveau limite les choix possibles pour rester efficace et sécurisé.</p>
-    <div class="grid">
-      <button id="btnFacile">Facile</button>
-      <button id="btnNormal">Normal</button>
-      <button id="btnDifficile">Difficile</button>
-    </div>
-    <p id="infoDiff" class="small"></p>
-  </div>
+    <!-- SÉANCE -->
+    <main class="card" id="sessionCard" style="display:none;">
+      <div class="section-title">Séance du jour</div>
+      <p style="font-size:13px;color:var(--text-soft);margin-bottom:10px;">
+        Niveau de progression : <span id="levelLabel">1</span>
+      </p>
 
-  <!-- ÉTAPE 3 : SÉANCE GÉNÉRÉE -->
-  <div class="card" id="blocSeance" style="display:none;">
-    <h2>Semaine 1 – Séance générée</h2>
-    <p class="small">Basée sur ton test max et la difficulté choisie.</p>
-    <ul id="detailsSeance" class="small"></ul>
+      <!-- POMPES -->
+      <div class="exercise" id="ex-pompes">
+        <h2>Pompes</h2>
+        <div class="modify-link" onclick="toggleAltPanel('pompes')">Modifier l’exercice</div>
+        <div class="alt-panel" id="alt-pompes" style="display:none;">
+          <div>Choisis une alternative :</div>
+          <button onclick="selectAlternative('pompes', 0)">Pompes diamant (plus difficile)</button>
+          <button onclick="selectAlternative('pompes', 1)">Pompes inclinées (plus facile)</button>
+        </div>
+        <p id="pompesReps">4 séries · 12 répétitions</p>
+
+        <div class="timer-block">
+          <div class="timer-label">Récupération entre séries</div>
+          <div class="timer-display rest" id="timerPompes">60</div>
+          <button class="timer-btn" onclick="startSimpleTimer('pompes')">Start</button>
+          <button class="timer-btn" onclick="pauseSimpleTimer('pompes')">Pause</button>
+          <button class="timer-btn" onclick="resetSimpleTimer('pompes')">Reset</button>
+        </div>
+
+        <div class="series-list" id="series-pompes"></div>
+
+        <iframe id="video-pompes" src="https://www.youtube.com/embed/_l3ySVKYVJ8" allowfullscreen></iframe>
+      </div>
+
+      <!-- SQUATS -->
+      <div class="exercise" id="ex-squats">
+        <h2>Squats</h2>
+        <div class="modify-link" onclick="toggleAltPanel('squats')">Modifier l’exercice</div>
+        <div class="alt-panel" id="alt-squats" style="display:none;">
+          <div>Choisis une alternative :</div>
+          <button onclick="selectAlternative('squats', 0)">Fentes</button>
+          <button onclick="selectAlternative('squats', 1)">Chaise</button>
+        </div>
+        <p id="squatsReps">4 séries · 15 répétitions</p>
+
+        <div class="timer-block">
+          <div class="timer-label">Récupération entre séries</div>
+          <div class="timer-display rest" id="timerSquats">75</div>
+          <button class="timer-btn" onclick="startSimpleTimer('squats')">Start</button>
+          <button class="timer-btn" onclick="pauseSimpleTimer('squats')">Pause</button>
+          <button class="timer-btn" onclick="resetSimpleTimer('squats')">Reset</button>
+        </div>
+
+        <div class="series-list" id="series-squats"></div>
+
+        <iframe id="video-squats" src="https://www.youtube.com/embed/aclHkVaku9U" allowfullscreen></iframe>
+      </div>
+
+      <!-- GAINAGE -->
+      <div class="exercise" id="ex-gainage">
+        <h2>Gainage</h2>
+        <div class="modify-link" onclick="toggleAltPanel('gainage')">Modifier l’exercice</div>
+        <div class="alt-panel" id="alt-gainage" style="display:none;">
+          <div>Choisis une alternative :</div>
+          <button onclick="selectAlternative('gainage', 0)">Side plank</button>
+          <button onclick="selectAlternative('gainage', 1)">Hollow hold</button>
+        </div>
+        <p id="gainageReps">3 séries · 60 secondes</p>
+
+        <div class="timer-block">
+          <div class="timer-label">Temps de travail</div>
+          <div class="timer-display work" id="timerGainageWork">60</div>
+          <button class="timer-btn" onclick="startGainageWork()">Start</button>
+          <button class="timer-btn" onclick="pauseGainageWork()">Pause</button>
+          <button class="timer-btn" onclick="resetGainageWork()">Reset</button>
+        </div>
+
+        <div class="timer-block">
+          <div class="timer-label">Récupération</div>
+          <div class="timer-display rest" id="timerGainageRest">60</div>
+          <button class="timer-btn" onclick="startSimpleTimer('gainageRest')">Start</button>
+          <button class="timer-btn" onclick="pauseSimpleTimer('gainageRest')">Pause</button>
+          <button class="timer-btn" onclick="resetSimpleTimer('gainageRest')">Reset</button>
+        </div>
+
+        <div class="series-list" id="series-gainage"></div>
+
+        <iframe id="video-gainage" src="https://www.youtube.com/embed/pSHjTRCQxIw" allowfullscreen></iframe>
+      </div>
+
+      <div class="session-footer">
+        <button onclick="finishSession()">Séance terminée</button>
+      </div>
+    </main>
+
+    <!-- CALENDRIER -->
+    <section class="card">
+      <div class="section-title">Calendrier (objectif : 3 séances / semaine)</div>
+      <p style="font-size:13px;color:var(--text-soft);">
+        Cette semaine : <span id="weekCount">0</span> / 3 séances
+      </p>
+      <div id="calendar" class="calendar"></div>
+    </section>
+
+    <!-- COURBE DE PROGRESSION -->
+    <section class="card">
+      <div class="section-title">Progression</div>
+      <canvas id="progressChart"></canvas>
+    </section>
   </div>
 
   <script>
-    const maxInput = document.getElementById('maxPompes');
-    const validerMaxBtn = document.getElementById('validerMax');
-    const niveauTexte = document.getElementById('niveauTexte');
-    const blocDifficulte = document.getElementById('blocDifficulte');
-    const blocSeance = document.getElementById('blocSeance');
-    const btnFacile = document.getElementById('btnFacile');
-    const btnNormal = document.getElementById('btnNormal');
-    const btnDifficile = document.getElementById('btnDifficile');
-    const infoDiff = document.getElementById('infoDiff');
-    const detailsSeance = document.getElementById('detailsSeance');
-
-    let state = {
-      max: 0,
-      niveau: null,
-      difficulteAutorisee: [],
-      difficulteChoisie: null
-    };
-
-    function classifierNiveau(max) {
-      if (max <= 5) return 'ultra_debutant';
-      if (max <= 10) return 'debutant';
-      if (max <= 20) return 'intermediaire';
-      if (max <= 40) return 'confirme';
-      if (max <= 60) return 'avance';
-      return 'athlete';
+    /* ---------- UTIL ---------- */
+    function todayKey() {
+      const d = new Date();
+      return d.toISOString().slice(0, 10);
     }
 
-    const labelsNiveau = {
-      ultra_debutant: 'Ultra débutant (0–5 pompes)',
-      debutant: 'Débutant (6–10 pompes)',
-      intermediaire: 'Intermédiaire (11–20 pompes)',
-      confirme: 'Confirmé (21–40 pompes)',
-      avance: 'Avancé (41–60 pompes)',
-      athlete: 'Athlète (60+ pompes)'
-    };
-
-    const difficulteAutoriseeMap = {
-      ultra_debutant: ['Facile'],
-      debutant: ['Facile', 'Normal'],
-      intermediaire: ['Facile', 'Normal', 'Difficile'],
-      confirme: ['Facile', 'Normal', 'Difficile'],
-      avance: ['Facile', 'Normal', 'Difficile'],
-      athlete: ['Facile', 'Normal', 'Difficile']
-    };
-
-    const tables = {
-      dips: {
-        ultra_debutant: '4–6',
-        debutant: '8–10',
-        intermediaire: '12–14',
-        confirme: '14–16',
-        avance: '16–18',
-        athlete: '18–20'
-      },
-      curl: {
-        ultra_debutant: '6–8',
-        debutant: '8–10',
-        intermediaire: '10–12',
-        confirme: '12–14',
-        avance: '14–16',
-        athlete: '16–18'
-      },
-      gainage: {
-        ultra_debutant: '15–20 sec',
-        debutant: '25–30 sec',
-        intermediaire: '35–40 sec',
-        confirme: '45–50 sec',
-        avance: '50–60 sec',
-        athlete: '60–75 sec'
-      },
-      repos: {
-        ultra_debutant: '30 sec',
-        debutant: '25 sec',
-        intermediaire: '20 sec',
-        confirme: '15–20 sec',
-        avance: '10–15 sec',
-        athlete: '10 sec'
-      },
-      series: {
-        ultra_debutant: 2,
-        debutant: 2,
-        intermediaire: 3,
-        confirme: 3,
-        avance: 3,
-        athlete: 4
-      }
-    };
-
-    function calculPompesTravail(max, difficulte) {
-      const map = { 'Facile': 0.40, 'Normal': 0.50, 'Difficile': 0.60 };
-      return Math.max(1, Math.round(max * map[difficulte]));
+    function getWeekKey(date) {
+      const d = new Date(date);
+      const year = d.getFullYear();
+      const firstJan = new Date(year, 0, 1);
+      const dayOfYear = Math.floor((d - firstJan) / 86400000) + 1;
+      const week = Math.ceil((dayOfYear + firstJan.getDay()) / 7);
+      return year + "-W" + week;
     }
 
-    function majBoutonsDifficulte() {
-      const allowed = state.difficulteAutorisee;
-      const setBtn = (btn, label) => {
-        if (allowed.includes(label)) {
-          btn.disabled = false;
-          btn.classList.remove('pill-disabled');
-        } else {
-          btn.disabled = true;
-          btn.classList.add('pill-disabled');
-        }
-      };
-      setBtn(btnFacile, 'Facile');
-      setBtn(btnNormal, 'Normal');
-      setBtn(btnDifficile, 'Difficile');
-
-      if (!allowed.includes('Difficile')) {
-        infoDiff.textContent = 'Le mode "Difficile" se débloque à partir de 11 pompes max.';
-      } else {
-        infoDiff.textContent = 'Tu peux choisir librement la difficulté.';
-      }
+    /* ---------- PARAMÈTRES / PROGRESSION ---------- */
+    function getMaxPompes() {
+      const v = localStorage.getItem("maxPompes");
+      return v ? parseInt(v) : null;
     }
 
-    function genererSeance() {
-      const n = state.niveau;
-      const d = state.difficulteChoisie;
-      const max = state.max;
-      const pompes = calculPompesTravail(max, d);
-      const dips = tables.dips[n];
-      const curl = tables.curl[n];
-      const gainage = tables.gainage[n];
-      const repos = tables.repos[n];
-      const series = tables.series[n];
-
-      detailsSeance.innerHTML = `
-        <li><span class="highlight">Pompes :</span> ${pompes} reps</li>
-        <li><span class="highlight">Dips sur chaise :</span> ${dips} reps</li>
-        <li><span class="highlight">Curl biceps :</span> ${curl} reps</li>
-        <li><span class="highlight">Gainage :</span> ${gainage}</li>
-        <li><span class="highlight">Repos entre exercices :</span> ${repos}</li>
-        <li><span class="highlight">Nombre de séries :</span> ${series}</li>
-      `;
-      blocSeance.style.display = 'block';
+    function setMaxPompes(v) {
+      localStorage.setItem("maxPompes", v);
     }
 
-    validerMaxBtn.addEventListener('click', () => {
-      const max = parseInt(maxInput.value, 10);
-      if (isNaN(max) || max < 0) {
-        alert('Entre un nombre valide de pompes.');
+    function getBaseSquats() {
+      const v = localStorage.getItem("baseSquats");
+      return v ? parseInt(v) : 15;
+    }
+
+    function setBaseSquats(v) {
+      localStorage.setItem("baseSquats", v);
+    }
+
+    function getBaseGainage() {
+      const v = localStorage.getItem("baseGainage");
+      return v ? parseInt(v) : 60;
+    }
+
+    function setBaseGainage(v) {
+      localStorage.setItem("baseGainage", v);
+    }
+
+    function getDifficulty() {
+      const v = localStorage.getItem("difficulty");
+      return v ? parseFloat(v) : 0.6;
+    }
+
+    function getLevel() {
+      const v = localStorage.getItem("niveau");
+      return v ? parseInt(v) : 1;
+    }
+
+    function setLevel(l) {
+      localStorage.setItem("niveau", l);
+    }
+
+    function saveSettings() {
+      const max = parseInt(document.getElementById("maxPompesInput").value);
+      const diff = parseFloat(document.getElementById("difficultySelect").value);
+      if (!max || max <= 0) {
+        alert("Entre un max valide");
         return;
       }
-      state.max = max;
-      state.niveau = classifierNiveau(max);
-      state.difficulteAutorisee = difficulteAutoriseeMap[state.niveau];
-      state.difficulteChoisie = null;
-      blocSeance.style.display = 'none';
-
-      niveauTexte.textContent = `Niveau détecté : ${labelsNiveau[state.niveau]}`;
-      blocDifficulte.style.display = 'block';
-      majBoutonsDifficulte();
-    });
-
-    function choisirDifficulte(label) {
-      state.difficulteChoisie = label;
-      genererSeance();
+      setMaxPompes(max);
+      localStorage.setItem("difficulty", diff);
+      document.getElementById("settingsInfo").innerText =
+        "Max : " + max + " pompes · Difficulté enregistrée";
+      if (sessionReady) updateProgram();
     }
 
-    btnFacile.addEventListener('click', () => {
-      if (!state.difficulteAutorisee.includes('Facile')) return;
-      choisirDifficulte('Facile');
-    });
+    /* ---------- CONFIG EXERCICES & ALTERNATIVES ---------- */
+    const exercisesConfig = {
+      pompes: {
+        label: "Pompes",
+        type: "reps",
+        defaultSeries: 4,
+        rest: 60,
+        difficulty: 1.0,
+        video: "https://www.youtube.com/embed/_l3ySVKYVJ8",
+        alternatives: [
+          { label: "Pompes diamant", difficulty: 1.2, rest: 75, video: "https://www.youtube.com/embed/_l3ySVKYVJ8" },
+          { label: "Pompes inclinées", difficulty: 0.8, rest: 45, video: "https://www.youtube.com/embed/_l3ySVKYVJ8" }
+        ]
+      },
+      squats: {
+        label: "Squats",
+        type: "reps",
+        defaultSeries: 4,
+        rest: 75,
+        difficulty: 1.0,
+        video: "https://www.youtube.com/embed/aclHkVaku9U",
+        alternatives: [
+          { label: "Fentes", difficulty: 1.1, rest: 90, video: "https://www.youtube.com/embed/aclHkVaku9U" },
+          { label: "Chaise", difficulty: 0.9, rest: 60, video: "https://www.youtube.com/embed/aclHkVaku9U" }
+        ]
+      },
+      gainage: {
+        label: "Gainage",
+        type: "time",
+        defaultSeries: 3,
+        rest: 60, // repos
+        difficulty: 1.0,
+        video: "https://www.youtube.com/embed/pSHjTRCQxIw",
+        alternatives: [
+          { label: "Side plank", difficulty: 1.1, rest: 40, video: "https://www.youtube.com/embed/pSHjTRCQxIw" },
+          { label: "Hollow hold", difficulty: 1.0, rest: 45, video: "https://www.youtube.com/embed/pSHjTRCQxIw" }
+        ]
+      }
+    };
 
-    btnNormal.addEventListener('click', () => {
-      if (!state.difficulteAutorisee.includes('Normal')) return;
-      choisirDifficulte('Normal');
-    });
+    const currentExerciseState = {
+      pompes: { ...exercisesConfig.pompes },
+      squats: { ...exercisesConfig.squats },
+      gainage: { ...exercisesConfig.gainage }
+    };
 
-    btnDifficile.addEventListener('click', () => {
-      if (!state.difficulteAutorisee.includes('Difficile')) return;
-      choisirDifficulte('Difficile');
-    });
+    function toggleAltPanel(ex) {
+      const panel = document.getElementById("alt-" + ex);
+      panel.style.display = panel.style.display === "none" ? "block" : "none";
+    }
+
+    function selectAlternative(ex, index) {
+      const base = exercisesConfig[ex];
+      const alt = base.alternatives[index];
+      currentExerciseState[ex] = { ...base, ...alt };
+      // Ajustement du nombre de séries si plus difficile
+      const diff = alt.difficulty;
+      const defaultSeries = base.defaultSeries;
+      currentExerciseState[ex].series =
+        diff > 1 ? Math.max(1, defaultSeries - 1) : defaultSeries;
+
+      // Mise à jour UI
+      if (ex === "pompes") {
+        document.querySelector("#ex-pompes h2").innerText = alt.label;
+        document.getElementById("video-pompes").src = alt.video;
+      } else if (ex === "squats") {
+        document.querySelector("#ex-squats h2").innerText = alt.label;
+        document.getElementById("video-squats").src = alt.video;
+      } else if (ex === "gainage") {
+        document.querySelector("#ex-gainage h2").innerText = alt.label;
+        document.getElementById("video-gainage").src = alt.video;
+      }
+
+      toggleAltPanel(ex);
+      if (sessionReady) updateProgram();
+    }
+
+    /* ---------- TIMERS SIMPLES (POMPES / SQUATS / REPOS GAINAGE) ---------- */
+    const simpleTimers = {
+      pompes: { time: 60, base: 60, interval: null, elementId: "timerPompes" },
+      squats: { time: 75, base: 75, interval: null, elementId: "timerSquats" },
+      gainageRest: { time: 60, base: 60, interval: null, elementId: "timerGainageRest" }
+    };
+
+    function updateRestTimersFromState() {
+      simpleTimers.pompes.base = currentExerciseState.pompes.rest;
+      simpleTimers.pompes.time = currentExerciseState.pompes.rest;
+      document.getElementById("timerPompes").innerText = currentExerciseState.pompes.rest;
+
+      simpleTimers.squats.base = currentExerciseState.squats.rest;
+      simpleTimers.squats.time = currentExerciseState.squats.rest;
+      document.getElementById("timerSquats").innerText = currentExerciseState.squats.rest;
+
+      simpleTimers.gainageRest.base = currentExerciseState.gainage.rest;
+      simpleTimers.gainageRest.time = currentExerciseState.gainage.rest;
+      document.getElementById("timerGainageRest").innerText = currentExerciseState.gainage.rest;
+    }
+
+    function startSimpleTimer(key) {
+      const t = simpleTimers[key];
+      if (!t) return;
+      clearInterval(t.interval);
+      t.interval = setInterval(() => {
+        if (t.time > 0) {
+          t.time--;
+          document.getElementById(t.elementId).innerText = t.time;
+        } else {
+          clearInterval(t.interval);
+        }
+      }, 1000);
+    }
+
+    function pauseSimpleTimer(key) {
+      const t = simpleTimers[key];
+      if (!t) return;
+      clearInterval(t.interval);
+    }
+
+    function resetSimpleTimer(key) {
+      const t = simpleTimers[key];
+      if (!t) return;
+      clearInterval(t.interval);
+      t.time = t.base;
+      document.getElementById(t.elementId).innerText = t.time;
+    }
+
+    /* ---------- TIMER GAINAGE TRAVAIL ---------- */
+    let gainageWork = {
+      time: 60,
+      base: 60,
+      interval: null
+    };
+    let gainageCurrentSeries = 0; // index 0..n
+
+    function startGainageWork() {
+      clearInterval(gainageWork.interval);
+      gainageWork.interval = setInterval(() => {
+        if (gainageWork.time > 0) {
+          gainageWork.time--;
+          document.getElementById("timerGainageWork").innerText = gainageWork.time;
+        } else {
+          clearInterval(gainageWork.interval);
+          autoValidateGainageSeries();
+        }
+      }, 1000);
+    }
+
+    function pauseGainageWork() {
+      clearInterval(gainageWork.interval);
+    }
+
+    function resetGainageWork() {
+      clearInterval(gainageWork.interval);
+      gainageWork.time = gainageWork.base;
+      document.getElementById("timerGainageWork").innerText = gainageWork.time;
+    }
+
+    function autoValidateGainageSeries() {
+      const series = document.querySelectorAll("#series-gainage .series-row");
+      if (gainageCurrentSeries >= series.length) return;
+      const row = series[gainageCurrentSeries];
+      if (row.classList.contains("done")) return;
+      const prevu = parseInt(row.dataset.prevu);
+      recordSeries("gainage", gainageCurrentSeries, prevu);
+      markSeriesDone(row, prevu);
+      gainageCurrentSeries++;
+    }
+
+    /* ---------- SÉRIES / SUIVI ---------- */
+    let sessionData = {
+      pompes: [],
+      squats: [],
+      gainage: []
+    };
+
+    function initSeriesUI(exercise, prevu, seriesCount) {
+      const container = document.getElementById("series-" + exercise);
+      container.innerHTML = "";
+      sessionData[exercise] = [];
+      for (let i = 0; i < seriesCount; i++) {
+        const row = document.createElement("div");
+        row.className = "series-row";
+        row.dataset.index = i;
+        row.dataset.prevu = prevu;
+        row.dataset.exercise = exercise;
+
+        const header = document.createElement("div");
+        header.className = "series-header";
+        const left = document.createElement("span");
+        left.innerText = "Série " + (i + 1) + " — " + prevu + (exercise === "gainage" ? " sec prévues" : " reps prévues");
+        const status = document.createElement("span");
+        status.className = "series-status";
+        status.innerText = "En attente";
+        header.appendChild(left);
+        header.appendChild(status);
+
+        const actions = document.createElement("div");
+        actions.className = "series-actions";
+        const btnOk = document.createElement("button");
+        btnOk.className = "series-btn";
+        btnOk.innerText = "Valider";
+        btnOk.onclick = () => {
+          const p = parseInt(row.dataset.prevu);
+          recordSeries(exercise, i, p);
+          markSeriesDone(row, p);
+          if (exercise === "gainage") gainageCurrentSeries = i + 1;
+        };
+        const btnLess = document.createElement("button");
+        btnLess.className = "series-btn";
+        btnLess.innerText = "J’ai fait moins";
+        btnLess.onclick = () => showLessInput(row);
+        actions.appendChild(btnOk);
+        actions.appendChild(btnLess);
+
+        row.appendChild(header);
+        row.appendChild(actions);
+        container.appendChild(row);
+      }
+    }
+
+    function showLessInput(row) {
+      if (row.querySelector(".series-input-row")) return;
+      const exercise = row.dataset.exercise;
+      const prevu = parseInt(row.dataset.prevu);
+      const inputRow = document.createElement("div");
+      inputRow.className = "series-input-row";
+      const input = document.createElement("input");
+      input.type = "number";
+      input.placeholder = exercise === "gainage"
+        ? "Secondes tenues (sur " + prevu + ")"
+        : "Reps faites (sur " + prevu + ")";
+      const btn = document.createElement("button");
+      btn.innerText = "OK";
+      btn.onclick = () => {
+        const val = parseInt(input.value);
+        if (!val || val < 0) {
+          alert("Valeur invalide");
+          return;
+        }
+        recordSeries(exercise, parseInt(row.dataset.index), val);
+        markSeriesDone(row, val);
+        if (exercise === "gainage") gainageCurrentSeries = parseInt(row.dataset.index) + 1;
+      };
+      inputRow.appendChild(input);
+      inputRow.appendChild(btn);
+      row.appendChild(inputRow);
+    }
+
+    function recordSeries(exercise, index, fait) {
+      if (!sessionData[exercise]) sessionData[exercise] = [];
+      const prevu = parseInt(document.querySelector("#series-" + exercise + " .series-row[data-index='" + index + "']").dataset.prevu);
+      sessionData[exercise][index] = { prevu, fait };
+    }
+
+    function markSeriesDone(row, fait) {
+      row.classList.add("done");
+      const status = row.querySelector(".series-status");
+      status.innerText = "Fait : " + fait;
+      const buttons = row.querySelectorAll(".series-btn");
+      buttons.forEach(b => b.disabled = true);
+    }
+
+    function allSeriesDone() {
+      for (const ex of ["pompes", "squats", "gainage"]) {
+        const rows = document.querySelectorAll("#series-" + ex + " .series-row");
+        if (rows.length === 0) return false;
+        for (const r of rows) {
+          if (!r.classList.contains("done")) return false;
+        }
+      }
+      return true;
+    }
+
+    /* ---------- PROGRAMME (REPS / TEMPS) ---------- */
+    function updateProgram() {
+      const max = getMaxPompes();
+      const diff = getDifficulty();
+      const lvl = getLevel();
+      document.getElementById("levelLabel").innerText = lvl;
+
+      if (!max) return;
+
+      const basePompes = Math.round(max * diff);
+      const pompes = basePompes + (lvl - 1) * 2;
+
+      const baseSquats = getBaseSquats();
+      const squats = baseSquats + (lvl - 1) * 2;
+
+      const baseGain = getBaseGainage();
+      const gainage = baseGain + (lvl - 1) * 5;
+
+      const pompesSeries = currentExerciseState.pompes.series || exercisesConfig.pompes.defaultSeries;
+      const squatsSeries = currentExerciseState.squats.series || exercisesConfig.squats.defaultSeries;
+      const gainageSeries = currentExerciseState.gainage.series || exercisesConfig.gainage.defaultSeries;
+
+      document.getElementById("pompesReps").innerText =
+        pompesSeries + " séries · " + pompes + " répétitions";
+      document.getElementById("squatsReps").innerText =
+        squatsSeries + " séries · " + squats + " répétitions";
+      document.getElementById("gainageReps").innerText =
+        gainageSeries + " séries · " + gainage + " secondes";
+
+      initSeriesUI("pompes", pompes, pompesSeries);
+      initSeriesUI("squats", squats, squatsSeries);
+      initSeriesUI("gainage", gainage, gainageSeries);
+
+      gainageWork.base = gainage;
+      gainageWork.time = gainage;
+      document.getElementById("timerGainageWork").innerText = gainage;
+      gainageCurrentSeries = 0;
+
+      updateRestTimersFromState();
+    }
+
+    /* ---------- HISTORIQUE / RECALCUL ---------- */
+    function saveDailyHistory() {
+      const key = todayKey();
+      const allHistory = JSON.parse(localStorage.getItem("dailyHistory") || "{}");
+      allHistory[key] = sessionData;
+      localStorage.setItem("dailyHistory", JSON.stringify(allHistory));
+    }
+
+    function recalcFromSession() {
+      function avg(ex) {
+        const arr = sessionData[ex] || [];
+        const vals = arr.map(s => s.fait).filter(v => typeof v === "number");
+        if (!vals.length) return null;
+        const sum = vals.reduce((a, b) => a + b, 0);
+        return sum / vals.length;
+      }
+      const avgPompes = avg("pompes");
+      const avgSquats = avg("squats");
+      const avgGain = avg("gainage");
+
+      if (avgPompes) setMaxPompes(Math.round(avgPompes));
+      if (avgSquats) setBaseSquats(Math.round(avgSquats));
+      if (avgGain) setBaseGainage(Math.round(avgGain));
+    }
+
+    /* ---------- CALENDRIER 3 SÉANCES / SEMAINE ---------- */
+    function saveTrainingWeek() {
+      const now = new Date();
+      const key = getWeekKey(now);
+      let history = JSON.parse(localStorage.getItem("trainingHistory") || "{}");
+      history[key] = (history[key] || 0) + 1;
+      localStorage.setItem("trainingHistory", JSON.stringify(history));
+    }
+
+    function updateCalendar() {
+      const history = JSON.parse(localStorage.getItem("trainingHistory") || "{}");
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth();
+      const first = new Date(year, month, 1);
+      const last = new Date(year, month + 1, 0);
+
+      const cal = document.getElementById("calendar");
+      cal.innerHTML = "";
+
+      const todayWeekKey = getWeekKey(now);
+      const weekCount = history[todayWeekKey] || 0;
+      document.getElementById("weekCount").innerText = weekCount;
+
+      for (let d = 1; d <= last.getDate(); d++) {
+        const date = new Date(year, month, d);
+        const key = getWeekKey(date);
+        const count = history[key] || 0;
+
+        let cls = "day ";
+        if (date > now) {
+          cls += "future ";
+        } else {
+          cls += "d" + Math.min(count, 3) + " ";
+        }
+        if (d === now.getDate()) cls += "current ";
+
+        const div = document.createElement("div");
+        div.className = cls;
+        div.innerText = d;
+        cal.appendChild(div);
+      }
+    }
+
+    /* ---------- COURBE DE PROGRESSION ---------- */
+    let progressChartInstance = null;
+
+    function buildProgressChart() {
+      const history = JSON.parse(localStorage.getItem("dailyHistory") || "{}");
+
+      const labels = [];
+      const pompesData = [];
+      const squatsData = [];
+      const gainageData = [];
+
+      const dates = Object.keys(history).sort();
+      for (const date of dates) {
+        const day = history[date];
+
+        function avg(arr) {
+          if (!arr || arr.length === 0) return null;
+          const vals = arr.map(s => s.fait);
+          return vals.reduce((a,b)=>a+b,0) / vals.length;
+        }
+
+        labels.push(date);
+        pompesData.push(avg(day.pompes));
+        squatsData.push(avg(day.squats));
+        gainageData.push(avg(day.gainage));
+      }
+
+      const ctx = document.getElementById("progressChart");
+      if (!ctx) return;
+
+      if (progressChartInstance) {
+        progressChartInstance.destroy();
+      }
+
+      progressChartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Pompes",
+              data: pompesData,
+              borderColor: "#ef4444",
+              backgroundColor: "rgba(239,68,68,0.2)",
+              tension: 0.3
+            },
+            {
+              label: "Squats",
+              data: squatsData,
+              borderColor: "#22c55e",
+              backgroundColor: "rgba(34,197,94,0.2)",
+              tension: 0.3
+            },
+            {
+              label: "Gainage (sec)",
+              data: gainageData,
+              borderColor: "#3b82f6",
+              backgroundColor: "rgba(59,130,246,0.2)",
+              tension: 0.3
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    }
+
+    /* ---------- FIN DE SÉANCE ---------- */
+    function finishSession() {
+      if (!allSeriesDone()) {
+        alert("Tu n’as pas validé toutes les séries.");
+        return;
+      }
+      saveDailyHistory();
+      recalcFromSession();
+      saveTrainingWeek();
+
+      let lvl = getLevel();
+      setLevel(lvl + 1);
+
+      alert("Séance enregistrée. Prochaine séance recalculée.");
+      updateProgram();
+      updateCalendar();
+      buildProgressChart();
+    }
+
+    /* ---------- ÉCHAUFFEMENT ---------- */
+    let sessionReady = false;
+
+    function validateWarmup() {
+      sessionReady = true;
+      document.getElementById("warmupCard").style.display = "none";
+      document.getElementById("sessionCard").style.display = "block";
+      updateProgram();
+    }
+
+    /* ---------- INIT ---------- */
+    (function init() {
+      const max = getMaxPompes();
+      if (max) {
+        document.getElementById("maxPompesInput").value = max;
+        document.getElementById("settingsInfo").innerText =
+          "Max : " + max + " pompes · Difficulté : " + getDifficulty();
+      }
+      const diff = getDifficulty();
+      document.getElementById("difficultySelect").value = diff.toString();
+
+      updateCalendar();
+      buildProgressChart();
+      updateRestTimersFromState();
+    })();
   </script>
 </body>
 </html>
