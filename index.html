@@ -1,1038 +1,2526 @@
 <!DOCTYPE html>
+
 <html lang="fr">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Home Muscu</title>
+
   <style>
+
     :root {
+
       --bg: #020617;
+
       --card: #0b1120;
+
       --accent: #22c55e;
+
       --text-main: #e5e7eb;
+
       --text-soft: #9ca3af;
+
       --border: #1f2937;
+
       --danger: #ef4444;
+
       --warn: #f59e0b;
+
       --ok: #22c55e;
+
       --mid: #f97316;
+
       --current: #3b82f6;
+
       --work: #ef4444;
+
       --rest: #22c55e;
+
     }
+
+
 
     body {
+
       margin: 0;
+
       font-family: system-ui, -apple-system, sans-serif;
+
       background: radial-gradient(circle at top, #1f2937 0, #020617 55%);
+
       color: var(--text-main);
+
       padding: 16px;
+
     }
+
+
 
     .app {
+
       max-width: 480px;
+
       margin: 0 auto;
+
     }
+
+
 
     .header {
+
       text-align: center;
+
       margin-bottom: 20px;
+
     }
+
+
 
     .title {
+
       font-size: 24px;
+
       font-weight: 700;
+
     }
+
+
 
     .subtitle {
+
       font-size: 13px;
+
       color: var(--text-soft);
+
     }
+
+
 
     .card {
+
       background: rgba(15, 23, 42, 0.96);
+
       border-radius: 18px;
+
       padding: 16px;
+
       border: 1px solid var(--border);
+
       margin-bottom: 16px;
+
     }
+
+
 
     .section-title {
+
       font-size: 13px;
+
       text-transform: uppercase;
+
       color: var(--text-soft);
+
       margin-bottom: 10px;
+
     }
+
+
 
     .input-row {
+
       display: flex;
+
       gap: 8px;
+
       margin-bottom: 8px;
+
     }
+
+
 
     .input-row input,
+
     .input-row select {
+
       flex: 1;
+
       padding: 8px 10px;
+
       border-radius: 999px;
+
       border: 1px solid var(--border);
+
       background: #020617;
+
       color: var(--text-main);
+
       font-size: 14px;
+
     }
+
+
 
     .input-row button {
+
       padding: 8px 14px;
+
       border-radius: 999px;
+
       border: none;
+
       background: var(--accent);
+
       color: #022c22;
+
       font-weight: 600;
+
       font-size: 14px;
+
     }
+
+
 
     .exercise {
+
       margin-bottom: 24px;
+
     }
+
+
 
     .exercise h2 {
+
       margin: 0 0 2px 0;
+
       font-size: 18px;
+
     }
+
+
 
     .modify-link {
+
       font-size: 11px;
+
       color: var(--text-soft);
+
       cursor: pointer;
+
       margin-bottom: 6px;
+
     }
+
+
 
     .exercise p {
+
       margin: 0 0 8px 0;
+
       color: var(--text-soft);
+
       font-size: 13px;
+
     }
+
+
 
     iframe {
+
       width: 100%;
+
       height: 190px;
+
       border-radius: 12px;
+
       border: none;
+
       margin-top: 10px;
+
     }
+
+
 
     .timer-block {
+
       margin: 10px 0;
+
       padding: 10px;
+
       border-radius: 14px;
+
       border: 1px solid var(--border);
+
       background: #020617;
+
       text-align: center;
+
     }
+
+
 
     .timer-label {
+
       font-size: 12px;
+
       color: var(--text-soft);
+
       margin-bottom: 4px;
+
     }
+
+
 
     .timer-display {
+
       font-size: 32px;
+
       font-weight: 700;
+
       margin-bottom: 6px;
+
     }
+
+
 
     .timer-display.work {
+
       color: var(--work);
+
     }
+
+
 
     .timer-display.rest {
+
       color: var(--rest);
+
     }
+
+
 
     .timer-btn {
+
       padding: 6px 12px;
+
       border-radius: 999px;
+
       border: none;
+
       background: var(--accent);
+
       color: #022c22;
+
       font-weight: 600;
+
       font-size: 12px;
+
       margin: 2px;
+
     }
+
+
 
     .series-list {
+
       margin-top: 8px;
+
       border-radius: 12px;
+
       border: 1px solid var(--border);
+
       padding: 8px;
+
       background: #020617;
+
     }
+
+
 
     .series-row {
+
       display: flex;
+
       flex-direction: column;
+
       gap: 4px;
+
       padding: 6px 8px;
+
       border-radius: 10px;
+
       margin-bottom: 6px;
+
       background: #020617;
+
       border: 1px solid transparent;
+
       font-size: 13px;
+
     }
+
+
 
     .series-row.done {
+
       border-color: var(--accent);
+
       background: rgba(34, 197, 94, 0.08);
+
     }
+
+
 
     .series-header {
+
       display: flex;
+
       justify-content: space-between;
+
       align-items: center;
+
       gap: 6px;
+
     }
+
+
 
     .series-actions {
+
       display: flex;
+
       gap: 6px;
+
       margin-top: 4px;
+
     }
+
+
 
     .series-btn {
+
       flex: 1;
+
       padding: 4px 6px;
+
       border-radius: 999px;
+
       border: 1px solid var(--border);
+
       background: #020617;
+
       color: var(--text-main);
+
       font-size: 11px;
+
     }
+
+
 
     .series-input-row {
+
       display: flex;
+
       gap: 6px;
+
       margin-top: 4px;
+
     }
+
+
 
     .series-input-row input {
+
       flex: 1;
+
       padding: 4px 6px;
+
       border-radius: 999px;
+
       border: 1px solid var(--border);
+
       background: #020617;
+
       color: var(--text-main);
+
       font-size: 12px;
+
     }
+
+
 
     .series-input-row button {
+
       padding: 4px 8px;
+
       border-radius: 999px;
+
       border: none;
+
       background: var(--accent);
+
       color: #022c22;
+
       font-size: 12px;
+
       font-weight: 600;
+
     }
+
+
 
     .alt-panel {
+
       margin: 6px 0 4px 0;
+
       padding: 6px;
+
       border-radius: 10px;
+
       border: 1px solid var(--border);
+
       background: #020617;
+
       font-size: 12px;
+
     }
+
+
 
     .alt-panel button {
+
       width: 100%;
+
       margin-top: 4px;
+
       padding: 6px 8px;
+
       border-radius: 999px;
+
       border: 1px solid var(--border);
+
       background: #020617;
+
       color: var(--text-main);
+
       font-size: 12px;
+
     }
+
+
 
     .session-footer {
+
       text-align: center;
+
       margin-top: 16px;
+
     }
+
+
 
     .session-footer button {
+
       padding: 10px 18px;
+
       border-radius: 999px;
+
       border: 1px solid var(--border);
+
       background: rgba(15, 23, 42, 0.9);
+
       color: var(--text-main);
+
       font-size: 14px;
+
     }
+
+
 
     .calendar {
+
       display: grid;
+
       grid-template-columns: repeat(7, 1fr);
+
       gap: 6px;
+
       margin-top: 10px;
+
     }
+
+
 
     .day {
+
       width: 100%;
+
       padding: 8px 0;
+
       border-radius: 10px;
+
       text-align: center;
+
       font-size: 11px;
+
       font-weight: 600;
+
     }
+
+
 
     .d0 { background: var(--danger); }
+
     .d1 { background: var(--warn); }
+
     .d2 { background: var(--mid); }
+
     .d3 { background: var(--ok); }
+
     .future { background: #1e293b; color: var(--text-soft); }
+
     .current { outline: 2px solid var(--current); }
 
+
+
     .warmup-list {
+
       font-size: 13px;
+
       color: var(--text-soft);
+
       margin: 8px 0 10px 0;
+
     }
+
+
 
     .warmup-list li {
+
       margin-bottom: 4px;
+
     }
+
+
 
     .warmup-btn {
+
       width: 100%;
+
       padding: 10px 14px;
+
       border-radius: 999px;
+
       border: none;
+
       background: var(--accent);
+
       color: #022c22;
+
       font-weight: 600;
+
       font-size: 14px;
+
     }
+/* ==== AmÃ©lioration alternatives ==== */
+
+.alt-panel {
+
+  margin: 8px 0;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--accent);
+
+  background: rgba(34,197,94,0.12);
+
+  font-size: 14px;
+
+  color: var(--text-main);
+
+  animation: fadeIn 0.25s ease-out;
+
+}
+
+
+
+.alt-panel button {
+
+  background: var(--card);
+
+  border: 1px solid var(--accent);
+
+  color: var(--accent);
+
+  font-weight: 600;
+
+  margin-top: 8px;
+
+}
+
+
+
+.modify-link {
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  color: var(--accent);
+
+  cursor: pointer;
+
+}
+
+
+
+@keyframes fadeIn {
+
+  from { opacity: 0; transform: translateY(-5px); }
+
+  to { opacity: 1; transform: translateY(0); }
+
+}
+
+
+
+/* ==== Clignotement du timer final ==== */
+
+@keyframes blink {
+
+  0% { opacity: 1; }
+
+  50% { opacity: 0.2; }
+
+  100% { opacity: 1; }
+
+}
+
+
+
+.timer-finish {
+
+  color: var(--ok);
+
+  font-weight: bold;
+
+  animation: blink 0.5s ease-in-out 6;
+
+}
   </style>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
+
 <body>
+
   <div class="app">
+
     <header class="header">
+
       <div class="title">Programme Home Muscu</div>
-      <div class="subtitle">Progression réelle, alternatives, timers, courbes</div>
+
+      <div class="subtitle">Progression rÃ©elle, alternatives, timers, courbes</div>
+
     </header>
 
-    <!-- ÉCHAUFFEMENT -->
+
+
+    <!-- ÃCHAUFFEMENT -->
+
     <section class="card" id="warmupCard">
-      <div class="section-title">Échauffement obligatoire</div>
+
+      <div class="section-title">Ãchauffement obligatoire</div>
+
       <p style="font-size:13px;color:var(--text-soft);">
-        Avant de démarrer la séance, prends 1–2 minutes pour préparer tes articulations :
+
+        Avant de dÃ©marrer la sÃ©ance, prends 1â2 minutes pour prÃ©parer tes articulations :
+
       </p>
+
       <ul class="warmup-list">
-        <li>Rotations de poignets (10–15 secondes dans chaque sens)</li>
-        <li>Quelques squats lents (5–10 répétitions, amplitude confortable)</li>
-        <li>Cercles d’épaules et mobilisation douce du dos</li>
+
+        <li>Rotations de poignets (10â15 secondes dans chaque sens)</li>
+
+        <li>Quelques squats lents (5â10 rÃ©pÃ©titions, amplitude confortable)</li>
+
+        <li>Cercles dâÃ©paules et mobilisation douce du dos</li>
+
       </ul>
-      <button class="warmup-btn" onclick="validateWarmup()">J’ai fait mon échauffement</button>
+
+      <button class="warmup-btn" onclick="validateWarmup()">Jâai fait mon Ã©chauffement</button>
+
     </section>
 
-    <!-- PARAMÈTRES -->
+
+
+    <!-- PARAMÃTRES -->
+
     <section class="card">
-      <div class="section-title">Point de départ</div>
+
+      <div class="section-title">Point de dÃ©part</div>
+
       <div class="input-row">
+
         <input type="number" id="maxPompesInput" placeholder="Ton max de pompes">
+
       </div>
+
       <div class="input-row">
+
         <select id="difficultySelect">
+
           <option value="0.5">Facile (50%)</option>
+
           <option value="0.6">Normal (60%)</option>
+
           <option value="0.7">Difficile (70%)</option>
+
         </select>
+
         <button onclick="saveSettings()">OK</button>
+
       </div>
+
       <p id="settingsInfo" style="font-size:12px;color:var(--text-soft);">
-        Configure ton max et ta difficulté, tout sera mémorisé.
+
+        Configure ton max et ta difficultÃ©, tout sera mÃ©morisÃ©.
+
       </p>
+
     </section>
 
-    <!-- SÉANCE -->
+
+
+    <!-- SÃANCE -->
+
     <main class="card" id="sessionCard" style="display:none;">
-      <div class="section-title">Séance du jour</div>
+
+      <div class="section-title">SÃ©ance du jour</div>
+
       <p style="font-size:13px;color:var(--text-soft);margin-bottom:10px;">
+
         Niveau de progression : <span id="levelLabel">1</span>
+
       </p>
+
+
 
       <!-- POMPES -->
+
       <div class="exercise" id="ex-pompes">
+
         <h2>Pompes</h2>
-        <div class="modify-link" onclick="toggleAltPanel('pompes')">Modifier l’exercice</div>
+
+        <div class="modify-link" onclick="toggleAltPanel('pompes')">Modifier lâexercice</div>
+
         <div class="alt-panel" id="alt-pompes" style="display:none;">
+
           <div>Choisis une alternative :</div>
+
           <button onclick="selectAlternative('pompes', 0)">Pompes diamant (plus difficile)</button>
-          <button onclick="selectAlternative('pompes', 1)">Pompes inclinées (plus facile)</button>
+
+          <button onclick="selectAlternative('pompes', 1)">Pompes inclinÃ©es (plus facile)</button>
+
         </div>
-        <p id="pompesReps">4 séries · 12 répétitions</p>
+
+        <p id="pompesReps">4 sÃ©ries Â· 12 rÃ©pÃ©titions</p>
+
+
 
         <div class="timer-block">
-          <div class="timer-label">Récupération entre séries</div>
+
+          <div class="timer-label">RÃ©cupÃ©ration entre sÃ©ries</div>
+
           <div class="timer-display rest" id="timerPompes">60</div>
+
           <button class="timer-btn" onclick="startSimpleTimer('pompes')">Start</button>
+
           <button class="timer-btn" onclick="pauseSimpleTimer('pompes')">Pause</button>
+
           <button class="timer-btn" onclick="resetSimpleTimer('pompes')">Reset</button>
+
         </div>
+
+
 
         <div class="series-list" id="series-pompes"></div>
 
+
+
         <iframe id="video-pompes" src="https://www.youtube.com/embed/_l3ySVKYVJ8" allowfullscreen></iframe>
+
       </div>
 
+
+
       <!-- SQUATS -->
+
       <div class="exercise" id="ex-squats">
+
         <h2>Squats</h2>
-        <div class="modify-link" onclick="toggleAltPanel('squats')">Modifier l’exercice</div>
+
+        <div class="modify-link" onclick="toggleAltPanel('squats')">Modifier lâexercice</div>
+
         <div class="alt-panel" id="alt-squats" style="display:none;">
+
           <div>Choisis une alternative :</div>
+
           <button onclick="selectAlternative('squats', 0)">Fentes</button>
+
           <button onclick="selectAlternative('squats', 1)">Chaise</button>
+
         </div>
-        <p id="squatsReps">4 séries · 15 répétitions</p>
+
+        <p id="squatsReps">4 sÃ©ries Â· 15 rÃ©pÃ©titions</p>
+
+
 
         <div class="timer-block">
-          <div class="timer-label">Récupération entre séries</div>
+
+          <div class="timer-label">RÃ©cupÃ©ration entre sÃ©ries</div>
+
           <div class="timer-display rest" id="timerSquats">75</div>
+
           <button class="timer-btn" onclick="startSimpleTimer('squats')">Start</button>
+
           <button class="timer-btn" onclick="pauseSimpleTimer('squats')">Pause</button>
+
           <button class="timer-btn" onclick="resetSimpleTimer('squats')">Reset</button>
+
         </div>
+
+
 
         <div class="series-list" id="series-squats"></div>
 
+
+
         <iframe id="video-squats" src="https://www.youtube.com/embed/aclHkVaku9U" allowfullscreen></iframe>
+
       </div>
 
+
+
       <!-- GAINAGE -->
+
       <div class="exercise" id="ex-gainage">
+
         <h2>Gainage</h2>
-        <div class="modify-link" onclick="toggleAltPanel('gainage')">Modifier l’exercice</div>
+
+        <div class="modify-link" onclick="toggleAltPanel('gainage')">Modifier lâexercice</div>
+
         <div class="alt-panel" id="alt-gainage" style="display:none;">
+
           <div>Choisis une alternative :</div>
+
           <button onclick="selectAlternative('gainage', 0)">Side plank</button>
+
           <button onclick="selectAlternative('gainage', 1)">Hollow hold</button>
+
         </div>
-        <p id="gainageReps">3 séries · 60 secondes</p>
+
+        <p id="gainageReps">3 sÃ©ries Â· 60 secondes</p>
+
+
 
         <div class="timer-block">
+
           <div class="timer-label">Temps de travail</div>
+
           <div class="timer-display work" id="timerGainageWork">60</div>
+
           <button class="timer-btn" onclick="startGainageWork()">Start</button>
+
           <button class="timer-btn" onclick="pauseGainageWork()">Pause</button>
+
           <button class="timer-btn" onclick="resetGainageWork()">Reset</button>
+
         </div>
 
+
+
         <div class="timer-block">
-          <div class="timer-label">Récupération</div>
+
+          <div class="timer-label">RÃ©cupÃ©ration</div>
+
           <div class="timer-display rest" id="timerGainageRest">60</div>
+
           <button class="timer-btn" onclick="startSimpleTimer('gainageRest')">Start</button>
+
           <button class="timer-btn" onclick="pauseSimpleTimer('gainageRest')">Pause</button>
+
           <button class="timer-btn" onclick="resetSimpleTimer('gainageRest')">Reset</button>
+
         </div>
+
+
 
         <div class="series-list" id="series-gainage"></div>
 
+
+
         <iframe id="video-gainage" src="https://www.youtube.com/embed/pSHjTRCQxIw" allowfullscreen></iframe>
+
       </div>
+
+
 
       <div class="session-footer">
-        <button onclick="finishSession()">Séance terminée</button>
+
+        <button onclick="finishSession()">SÃ©ance terminÃ©e</button>
+
       </div>
+
     </main>
 
+
+
     <!-- CALENDRIER -->
+
     <section class="card">
-      <div class="section-title">Calendrier (objectif : 3 séances / semaine)</div>
+
+      <div class="section-title">Calendrier (objectif : 3 sÃ©ances / semaine)</div>
+
       <p style="font-size:13px;color:var(--text-soft);">
-        Cette semaine : <span id="weekCount">0</span> / 3 séances
+
+        Cette semaine : <span id="weekCount">0</span> / 3 sÃ©ances
+
       </p>
+
       <div id="calendar" class="calendar"></div>
+
     </section>
+
+
 
     <!-- COURBE DE PROGRESSION -->
+
     <section class="card">
+
       <div class="section-title">Progression</div>
+
       <canvas id="progressChart"></canvas>
+
     </section>
+
   </div>
 
+
+
   <script>
+
     /* ---------- UTIL ---------- */
+
     function todayKey() {
+
       const d = new Date();
+
       return d.toISOString().slice(0, 10);
+
     }
+
+
 
     function getWeekKey(date) {
+
       const d = new Date(date);
+
       const year = d.getFullYear();
+
       const firstJan = new Date(year, 0, 1);
+
       const dayOfYear = Math.floor((d - firstJan) / 86400000) + 1;
+
       const week = Math.ceil((dayOfYear + firstJan.getDay()) / 7);
+
       return year + "-W" + week;
+
     }
 
-    /* ---------- PARAMÈTRES / PROGRESSION ---------- */
+
+
+    /* ---------- PARAMÃTRES / PROGRESSION ---------- */
+
     function getMaxPompes() {
+
       const v = localStorage.getItem("maxPompes");
+
       return v ? parseInt(v) : null;
+
     }
+
+
 
     function setMaxPompes(v) {
+
       localStorage.setItem("maxPompes", v);
+
     }
+
+
 
     function getBaseSquats() {
+
       const v = localStorage.getItem("baseSquats");
+
       return v ? parseInt(v) : 15;
+
     }
+
+
 
     function setBaseSquats(v) {
+
       localStorage.setItem("baseSquats", v);
+
     }
+
+
 
     function getBaseGainage() {
+
       const v = localStorage.getItem("baseGainage");
+
       return v ? parseInt(v) : 60;
+
     }
+
+
 
     function setBaseGainage(v) {
+
       localStorage.setItem("baseGainage", v);
+
     }
+
+
 
     function getDifficulty() {
+
       const v = localStorage.getItem("difficulty");
+
       return v ? parseFloat(v) : 0.6;
+
     }
+
+
 
     function getLevel() {
+
       const v = localStorage.getItem("niveau");
+
       return v ? parseInt(v) : 1;
+
     }
+
+
 
     function setLevel(l) {
+
       localStorage.setItem("niveau", l);
+
     }
+
+
 
     function saveSettings() {
+
       const max = parseInt(document.getElementById("maxPompesInput").value);
+
       const diff = parseFloat(document.getElementById("difficultySelect").value);
+
       if (!max || max <= 0) {
+
         alert("Entre un max valide");
+
         return;
+
       }
+
       setMaxPompes(max);
+
       localStorage.setItem("difficulty", diff);
+
       document.getElementById("settingsInfo").innerText =
-        "Max : " + max + " pompes · Difficulté enregistrée";
+
+        "Max : " + max + " pompes Â· DifficultÃ© enregistrÃ©e";
+
       if (sessionReady) updateProgram();
+
     }
+
+
 
     /* ---------- CONFIG EXERCICES & ALTERNATIVES ---------- */
+
     const exercisesConfig = {
+
       pompes: {
+
         label: "Pompes",
+
         type: "reps",
+
         defaultSeries: 4,
+
         rest: 60,
+
         difficulty: 1.0,
+
         video: "https://www.youtube.com/embed/_l3ySVKYVJ8",
+
         alternatives: [
+
           { label: "Pompes diamant", difficulty: 1.2, rest: 75, video: "https://www.youtube.com/embed/_l3ySVKYVJ8" },
-          { label: "Pompes inclinées", difficulty: 0.8, rest: 45, video: "https://www.youtube.com/embed/_l3ySVKYVJ8" }
+
+          { label: "Pompes inclinÃ©es", difficulty: 0.8, rest: 45, video: "https://www.youtube.com/embed/_l3ySVKYVJ8" }
+
         ]
+
       },
+
       squats: {
+
         label: "Squats",
+
         type: "reps",
+
         defaultSeries: 4,
+
         rest: 75,
+
         difficulty: 1.0,
+
         video: "https://www.youtube.com/embed/aclHkVaku9U",
+
         alternatives: [
+
           { label: "Fentes", difficulty: 1.1, rest: 90, video: "https://www.youtube.com/embed/aclHkVaku9U" },
+
           { label: "Chaise", difficulty: 0.9, rest: 60, video: "https://www.youtube.com/embed/aclHkVaku9U" }
+
         ]
+
       },
+
       gainage: {
+
         label: "Gainage",
+
         type: "time",
+
         defaultSeries: 3,
+
         rest: 60, // repos
+
         difficulty: 1.0,
+
         video: "https://www.youtube.com/embed/pSHjTRCQxIw",
+
         alternatives: [
+
           { label: "Side plank", difficulty: 1.1, rest: 40, video: "https://www.youtube.com/embed/pSHjTRCQxIw" },
+
           { label: "Hollow hold", difficulty: 1.0, rest: 45, video: "https://www.youtube.com/embed/pSHjTRCQxIw" }
+
         ]
+
       }
+
     };
+
+
 
     const currentExerciseState = {
+
       pompes: { ...exercisesConfig.pompes },
+
       squats: { ...exercisesConfig.squats },
+
       gainage: { ...exercisesConfig.gainage }
+
     };
+
+
 
     function toggleAltPanel(ex) {
+
       const panel = document.getElementById("alt-" + ex);
+
       panel.style.display = panel.style.display === "none" ? "block" : "none";
+
     }
+
+
 
     function selectAlternative(ex, index) {
+
       const base = exercisesConfig[ex];
+
       const alt = base.alternatives[index];
+
       currentExerciseState[ex] = { ...base, ...alt };
-      // Ajustement du nombre de séries si plus difficile
+
+      // Ajustement du nombre de sÃ©ries si plus difficile
+
       const diff = alt.difficulty;
+
       const defaultSeries = base.defaultSeries;
+
       currentExerciseState[ex].series =
+
         diff > 1 ? Math.max(1, defaultSeries - 1) : defaultSeries;
 
-      // Mise à jour UI
+
+
+      // Mise Ã  jour UI
+
       if (ex === "pompes") {
+
         document.querySelector("#ex-pompes h2").innerText = alt.label;
+
         document.getElementById("video-pompes").src = alt.video;
+
       } else if (ex === "squats") {
+
         document.querySelector("#ex-squats h2").innerText = alt.label;
+
         document.getElementById("video-squats").src = alt.video;
+
       } else if (ex === "gainage") {
+
         document.querySelector("#ex-gainage h2").innerText = alt.label;
+
         document.getElementById("video-gainage").src = alt.video;
+
       }
+
+
 
       toggleAltPanel(ex);
+
       if (sessionReady) updateProgram();
+
     }
+
+
 
     /* ---------- TIMERS SIMPLES (POMPES / SQUATS / REPOS GAINAGE) ---------- */
+
     const simpleTimers = {
+
       pompes: { time: 60, base: 60, interval: null, elementId: "timerPompes" },
+
       squats: { time: 75, base: 75, interval: null, elementId: "timerSquats" },
+
       gainageRest: { time: 60, base: 60, interval: null, elementId: "timerGainageRest" }
+
     };
+
+
 
     function updateRestTimersFromState() {
+
       simpleTimers.pompes.base = currentExerciseState.pompes.rest;
+
       simpleTimers.pompes.time = currentExerciseState.pompes.rest;
+
       document.getElementById("timerPompes").innerText = currentExerciseState.pompes.rest;
 
+
+
       simpleTimers.squats.base = currentExerciseState.squats.rest;
+
       simpleTimers.squats.time = currentExerciseState.squats.rest;
+
       document.getElementById("timerSquats").innerText = currentExerciseState.squats.rest;
 
+
+
       simpleTimers.gainageRest.base = currentExerciseState.gainage.rest;
+
       simpleTimers.gainageRest.time = currentExerciseState.gainage.rest;
+
       document.getElementById("timerGainageRest").innerText = currentExerciseState.gainage.rest;
+
     }
+
+
 
     function startSimpleTimer(key) {
+
       const t = simpleTimers[key];
+
       if (!t) return;
+
       clearInterval(t.interval);
+
       t.interval = setInterval(() => {
+
         if (t.time > 0) {
+
           t.time--;
+
           document.getElementById(t.elementId).innerText = t.time;
+
         } else {
+
           clearInterval(t.interval);
+
         }
+
       }, 1000);
+
     }
+
+
 
     function pauseSimpleTimer(key) {
+
       const t = simpleTimers[key];
+
       if (!t) return;
+
       clearInterval(t.interval);
+
     }
+
+
 
     function resetSimpleTimer(key) {
+
       const t = simpleTimers[key];
+
       if (!t) return;
+
       clearInterval(t.interval);
+
       t.time = t.base;
+
       document.getElementById(t.elementId).innerText = t.time;
+
     }
+
+
 
     /* ---------- TIMER GAINAGE TRAVAIL ---------- */
+
     let gainageWork = {
+
       time: 60,
+
       base: 60,
+
       interval: null
+
     };
+
     let gainageCurrentSeries = 0; // index 0..n
 
+
+
     function startGainageWork() {
+
       clearInterval(gainageWork.interval);
+
       gainageWork.interval = setInterval(() => {
+
         if (gainageWork.time > 0) {
+
           gainageWork.time--;
+
           document.getElementById("timerGainageWork").innerText = gainageWork.time;
+
         } else {
+
           clearInterval(gainageWork.interval);
+
           autoValidateGainageSeries();
+
         }
+
       }, 1000);
+
     }
+
+
 
     function pauseGainageWork() {
+
       clearInterval(gainageWork.interval);
+
     }
+
+
 
     function resetGainageWork() {
+
       clearInterval(gainageWork.interval);
+
       gainageWork.time = gainageWork.base;
+
       document.getElementById("timerGainageWork").innerText = gainageWork.time;
+
     }
+
+
 
     function autoValidateGainageSeries() {
+
       const series = document.querySelectorAll("#series-gainage .series-row");
+
       if (gainageCurrentSeries >= series.length) return;
+
       const row = series[gainageCurrentSeries];
+
       if (row.classList.contains("done")) return;
+
       const prevu = parseInt(row.dataset.prevu);
+
       recordSeries("gainage", gainageCurrentSeries, prevu);
+
       markSeriesDone(row, prevu);
+
       gainageCurrentSeries++;
+
     }
 
-    /* ---------- SÉRIES / SUIVI ---------- */
+
+
+    /* ---------- SÃRIES / SUIVI ---------- */
+
     let sessionData = {
+
       pompes: [],
+
       squats: [],
+
       gainage: []
+
     };
 
+
+
     function initSeriesUI(exercise, prevu, seriesCount) {
+
       const container = document.getElementById("series-" + exercise);
+
       container.innerHTML = "";
+
       sessionData[exercise] = [];
+
       for (let i = 0; i < seriesCount; i++) {
+
         const row = document.createElement("div");
+
         row.className = "series-row";
+
         row.dataset.index = i;
+
         row.dataset.prevu = prevu;
+
         row.dataset.exercise = exercise;
 
+
+
         const header = document.createElement("div");
+
         header.className = "series-header";
+
         const left = document.createElement("span");
-        left.innerText = "Série " + (i + 1) + " — " + prevu + (exercise === "gainage" ? " sec prévues" : " reps prévues");
+
+        left.innerText = "SÃ©rie " + (i + 1) + " â " + prevu + (exercise === "gainage" ? " sec prÃ©vues" : " reps prÃ©vues");
+
         const status = document.createElement("span");
+
         status.className = "series-status";
+
         status.innerText = "En attente";
+
         header.appendChild(left);
+
         header.appendChild(status);
 
+
+
         const actions = document.createElement("div");
+
         actions.className = "series-actions";
+
         const btnOk = document.createElement("button");
+
         btnOk.className = "series-btn";
+
         btnOk.innerText = "Valider";
+
         btnOk.onclick = () => {
+
           const p = parseInt(row.dataset.prevu);
+
           recordSeries(exercise, i, p);
+
           markSeriesDone(row, p);
+
           if (exercise === "gainage") gainageCurrentSeries = i + 1;
+
         };
+
         const btnLess = document.createElement("button");
+
         btnLess.className = "series-btn";
-        btnLess.innerText = "J’ai fait moins";
+
+        btnLess.innerText = "Jâai fait moins";
+
         btnLess.onclick = () => showLessInput(row);
+
         actions.appendChild(btnOk);
+
         actions.appendChild(btnLess);
 
+
+
         row.appendChild(header);
+
         row.appendChild(actions);
+
         container.appendChild(row);
+
       }
+
     }
+
+
 
     function showLessInput(row) {
+
       if (row.querySelector(".series-input-row")) return;
+
       const exercise = row.dataset.exercise;
+
       const prevu = parseInt(row.dataset.prevu);
+
       const inputRow = document.createElement("div");
+
       inputRow.className = "series-input-row";
+
       const input = document.createElement("input");
+
       input.type = "number";
+
       input.placeholder = exercise === "gainage"
+
         ? "Secondes tenues (sur " + prevu + ")"
+
         : "Reps faites (sur " + prevu + ")";
+
       const btn = document.createElement("button");
+
       btn.innerText = "OK";
+
       btn.onclick = () => {
+
         const val = parseInt(input.value);
+
         if (!val || val < 0) {
+
           alert("Valeur invalide");
+
           return;
+
         }
+
         recordSeries(exercise, parseInt(row.dataset.index), val);
+
         markSeriesDone(row, val);
+
         if (exercise === "gainage") gainageCurrentSeries = parseInt(row.dataset.index) + 1;
+
       };
+
       inputRow.appendChild(input);
+
       inputRow.appendChild(btn);
+
       row.appendChild(inputRow);
+
     }
+
+
 
     function recordSeries(exercise, index, fait) {
+
       if (!sessionData[exercise]) sessionData[exercise] = [];
+
       const prevu = parseInt(document.querySelector("#series-" + exercise + " .series-row[data-index='" + index + "']").dataset.prevu);
+
       sessionData[exercise][index] = { prevu, fait };
+
     }
+
+
 
     function markSeriesDone(row, fait) {
+
       row.classList.add("done");
+
       const status = row.querySelector(".series-status");
+
       status.innerText = "Fait : " + fait;
+
       const buttons = row.querySelectorAll(".series-btn");
+
       buttons.forEach(b => b.disabled = true);
+
     }
+
+
 
     function allSeriesDone() {
+
       for (const ex of ["pompes", "squats", "gainage"]) {
+
         const rows = document.querySelectorAll("#series-" + ex + " .series-row");
+
         if (rows.length === 0) return false;
+
         for (const r of rows) {
+
           if (!r.classList.contains("done")) return false;
+
         }
+
       }
+
       return true;
+
     }
 
+
+
     /* ---------- PROGRAMME (REPS / TEMPS) ---------- */
+
     function updateProgram() {
+
       const max = getMaxPompes();
+
       const diff = getDifficulty();
+
       const lvl = getLevel();
+
       document.getElementById("levelLabel").innerText = lvl;
+
+
 
       if (!max) return;
 
+
+
       const basePompes = Math.round(max * diff);
+
       const pompes = basePompes + (lvl - 1) * 2;
 
+
+
       const baseSquats = getBaseSquats();
+
       const squats = baseSquats + (lvl - 1) * 2;
 
+
+
       const baseGain = getBaseGainage();
+
       const gainage = baseGain + (lvl - 1) * 5;
 
+
+
       const pompesSeries = currentExerciseState.pompes.series || exercisesConfig.pompes.defaultSeries;
+
       const squatsSeries = currentExerciseState.squats.series || exercisesConfig.squats.defaultSeries;
+
       const gainageSeries = currentExerciseState.gainage.series || exercisesConfig.gainage.defaultSeries;
 
+
+
       document.getElementById("pompesReps").innerText =
-        pompesSeries + " séries · " + pompes + " répétitions";
+
+        pompesSeries + " sÃ©ries Â· " + pompes + " rÃ©pÃ©titions";
+
       document.getElementById("squatsReps").innerText =
-        squatsSeries + " séries · " + squats + " répétitions";
+
+        squatsSeries + " sÃ©ries Â· " + squats + " rÃ©pÃ©titions";
+
       document.getElementById("gainageReps").innerText =
-        gainageSeries + " séries · " + gainage + " secondes";
+
+        gainageSeries + " sÃ©ries Â· " + gainage + " secondes";
+
+
 
       initSeriesUI("pompes", pompes, pompesSeries);
+
       initSeriesUI("squats", squats, squatsSeries);
+
       initSeriesUI("gainage", gainage, gainageSeries);
 
+
+
       gainageWork.base = gainage;
+
       gainageWork.time = gainage;
+
       document.getElementById("timerGainageWork").innerText = gainage;
+
       gainageCurrentSeries = 0;
 
+
+
       updateRestTimersFromState();
+
     }
+
+
 
     /* ---------- HISTORIQUE / RECALCUL ---------- */
+
     function saveDailyHistory() {
+
       const key = todayKey();
+
       const allHistory = JSON.parse(localStorage.getItem("dailyHistory") || "{}");
+
       allHistory[key] = sessionData;
+
       localStorage.setItem("dailyHistory", JSON.stringify(allHistory));
+
     }
+
+
 
     function recalcFromSession() {
+
       function avg(ex) {
+
         const arr = sessionData[ex] || [];
+
         const vals = arr.map(s => s.fait).filter(v => typeof v === "number");
+
         if (!vals.length) return null;
+
         const sum = vals.reduce((a, b) => a + b, 0);
+
         return sum / vals.length;
+
       }
+
       const avgPompes = avg("pompes");
+
       const avgSquats = avg("squats");
+
       const avgGain = avg("gainage");
 
+
+
       if (avgPompes) setMaxPompes(Math.round(avgPompes));
+
       if (avgSquats) setBaseSquats(Math.round(avgSquats));
+
       if (avgGain) setBaseGainage(Math.round(avgGain));
+
     }
 
-    /* ---------- CALENDRIER 3 SÉANCES / SEMAINE ---------- */
+
+
+    /* ---------- CALENDRIER 3 SÃANCES / SEMAINE ---------- */
+
     function saveTrainingWeek() {
+
       const now = new Date();
+
       const key = getWeekKey(now);
+
       let history = JSON.parse(localStorage.getItem("trainingHistory") || "{}");
+
       history[key] = (history[key] || 0) + 1;
+
       localStorage.setItem("trainingHistory", JSON.stringify(history));
+
     }
+
+
 
     function updateCalendar() {
+
       const history = JSON.parse(localStorage.getItem("trainingHistory") || "{}");
+
       const now = new Date();
+
       const year = now.getFullYear();
+
       const month = now.getMonth();
+
       const first = new Date(year, month, 1);
+
       const last = new Date(year, month + 1, 0);
 
+
+
       const cal = document.getElementById("calendar");
+
       cal.innerHTML = "";
 
+
+
       const todayWeekKey = getWeekKey(now);
+
       const weekCount = history[todayWeekKey] || 0;
+
       document.getElementById("weekCount").innerText = weekCount;
 
+
+
       for (let d = 1; d <= last.getDate(); d++) {
+
         const date = new Date(year, month, d);
+
         const key = getWeekKey(date);
+
         const count = history[key] || 0;
 
+
+
         let cls = "day ";
+
         if (date > now) {
+
           cls += "future ";
+
         } else {
+
           cls += "d" + Math.min(count, 3) + " ";
+
         }
+
         if (d === now.getDate()) cls += "current ";
 
+
+
         const div = document.createElement("div");
+
         div.className = cls;
+
         div.innerText = d;
+
         cal.appendChild(div);
+
       }
+
     }
+
+
 
     /* ---------- COURBE DE PROGRESSION ---------- */
+
     let progressChartInstance = null;
 
+
+
     function buildProgressChart() {
+
       const history = JSON.parse(localStorage.getItem("dailyHistory") || "{}");
 
+
+
       const labels = [];
+
       const pompesData = [];
+
       const squatsData = [];
+
       const gainageData = [];
 
+
+
       const dates = Object.keys(history).sort();
+
       for (const date of dates) {
+
         const day = history[date];
 
+
+
         function avg(arr) {
+
           if (!arr || arr.length === 0) return null;
+
           const vals = arr.map(s => s.fait);
+
           return vals.reduce((a,b)=>a+b,0) / vals.length;
+
         }
+
+
 
         labels.push(date);
+
         pompesData.push(avg(day.pompes));
+
         squatsData.push(avg(day.squats));
+
         gainageData.push(avg(day.gainage));
+
       }
+
+
 
       const ctx = document.getElementById("progressChart");
+
       if (!ctx) return;
 
+
+
       if (progressChartInstance) {
+
         progressChartInstance.destroy();
+
       }
+
+
 
       progressChartInstance = new Chart(ctx, {
+
         type: "line",
+
         data: {
+
           labels,
+
           datasets: [
+
             {
+
               label: "Pompes",
+
               data: pompesData,
+
               borderColor: "#ef4444",
+
               backgroundColor: "rgba(239,68,68,0.2)",
+
               tension: 0.3
+
             },
+
             {
+
               label: "Squats",
+
               data: squatsData,
+
               borderColor: "#22c55e",
+
               backgroundColor: "rgba(34,197,94,0.2)",
+
               tension: 0.3
+
             },
+
             {
+
               label: "Gainage (sec)",
+
               data: gainageData,
+
               borderColor: "#3b82f6",
+
               backgroundColor: "rgba(59,130,246,0.2)",
+
               tension: 0.3
+
             }
+
           ]
+
         },
+
         options: {
+
           responsive: true,
+
           scales: {
+
             y: { beginAtZero: true }
+
           }
+
         }
+
       });
+
     }
 
-    /* ---------- FIN DE SÉANCE ---------- */
+
+
+    /* ---------- FIN DE SÃANCE ---------- */
+
     function finishSession() {
+
       if (!allSeriesDone()) {
-        alert("Tu n’as pas validé toutes les séries.");
+
+        alert("Tu nâas pas validÃ© toutes les sÃ©ries.");
+
         return;
+
       }
+
       saveDailyHistory();
+
       recalcFromSession();
+
       saveTrainingWeek();
 
+
+
       let lvl = getLevel();
+
       setLevel(lvl + 1);
 
-      alert("Séance enregistrée. Prochaine séance recalculée.");
+
+
+      alert("SÃ©ance enregistrÃ©e. Prochaine sÃ©ance recalculÃ©e.");
+
       updateProgram();
+
       updateCalendar();
+
       buildProgressChart();
+
     }
 
-    /* ---------- ÉCHAUFFEMENT ---------- */
+
+
+    /* ---------- ÃCHAUFFEMENT ---------- */
+
     let sessionReady = false;
 
+
+
     function validateWarmup() {
+
       sessionReady = true;
+
       document.getElementById("warmupCard").style.display = "none";
+
       document.getElementById("sessionCard").style.display = "block";
+
       updateProgram();
+
     }
 
+
+
     /* ---------- INIT ---------- */
+
     (function init() {
+
       const max = getMaxPompes();
+
       if (max) {
+
         document.getElementById("maxPompesInput").value = max;
+
         document.getElementById("settingsInfo").innerText =
-          "Max : " + max + " pompes · Difficulté : " + getDifficulty();
+
+          "Max : " + max + " pompes Â· DifficultÃ© : " + getDifficulty();
+
       }
+
       const diff = getDifficulty();
+
       document.getElementById("difficultySelect").value = diff.toString();
 
+
+
       updateCalendar();
+
       buildProgressChart();
+
       updateRestTimersFromState();
+
     })();
+
   </script>
+
 </body>
+
 </html>
+
+
+
+
+;;;;
+
+
+/* ==== AmÃ©lioration alternatives ==== */
+
+.alt-panel {
+
+  margin: 8px 0;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--accent);
+
+  background: rgba(34,197,94,0.12);
+
+  font-size: 14px;
+
+  color: var(--text-main);
+
+  animation: fadeIn 0.25s ease-out;
+
+}
+
+
+
+.alt-panel button {
+
+  background: var(--card);
+
+  border: 1px solid var(--accent);
+
+  color: var(--accent);
+
+  font-weight: 600;
+
+  margin-top: 8px;
+
+}
+
+
+
+.modify-link {
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  color: var(--accent);
+
+  cursor: pointer;
+
+}
+
+
+
+@keyframes fadeIn {
+
+  from { opacity: 0; transform: translateY(-5px); }
+
+  to { opacity: 1; transform: translateY(0); }
+
+}
+
+
+
+/* ==== Clignotement du timer final ==== */
+
+@keyframes blink {
+
+  0% { opacity: 1; }
+
+  50% { opacity: 0.2; }
+
+  100% { opacity: 1; }
+
+}
+
+
+
+.timer-finish {
+
+  color: var(--ok);
+
+  font-weight: bold;
+
+  animation: blink 0.5s ease-in-out 6;
+
+}
+
+;
+
+;
+
+â 2) SUPPRESSION DES TIMERS DâEXERCICE ACTUELS
+
+ð Dans chaque exercice (pompes, squats), supprime le bloc :
+
+<div class="timer-block">
+
+  ...
+
+</div>
+
+Cette zone Ã©tait ton timer de repos gÃ©nÃ©ral.
+Elle doit Ãªtre remplacÃ©e par les timers entre les sÃ©ries, que je tâajoute aprÃ¨s.
+
+
+
+â 3) AJOUT DU TIMER ENTRE LES SÃRIES
+
+ð Ã ajouter dans ta fonction initSeriesUI(exercise, prevu, seriesCount), juste APRÃS :
+
+container.appendChild(row);
+
+â¡ï¸ Donc DANS la boucle for, aprÃ¨s que tu ajoutes une sÃ©rie.
+
+Ajoute CE BLOC :
+
+// Ajout du timer de repos entre chaque sÃ©rie
+
+if (i < seriesCount - 1) {
+
+  addRestTimerAfterRow(container, exercise, i, simpleTimers[exercise].base);
+
+}
+
+
+
+---
+
+
+
+â 4) AJOUT DES FONCTIONS "TIMER ENTRE SÃRIES"
+
+ð Ã ajouter dans ton script, juste aprÃ¨s la fonction initSeriesUI().
+
+function addRestTimerAfterRow(container, exercise, index, duration) {
+
+  const timerDiv = document.createElement("div");
+
+  timerDiv.className = "timer-block";
+
+  timerDiv.innerHTML = `
+
+    <div class="timer-label">Repos</div>
+
+    <div class="timer-display rest" id="${exercise}-rest-${index}">${duration}</div>
+
+    <button class="timer-btn" onclick="startInlineRest('${exercise}', ${index})">Start</button>
+
+    <button class="timer-btn" onclick="pauseInlineRest('${exercise}', ${index})">Pause</button>
+
+    <button class="timer-btn" onclick="resetInlineRest('${exercise}', ${index})">Reset</button>
+
+  `;
+
+  container.appendChild(timerDiv);
+
+}
+
+
+
+const inlineRestTimers = {};
+
+
+
+function startInlineRest(ex, i) {
+
+  const id = `${ex}-rest-${i}`;
+
+  if (!inlineRestTimers[id])
+
+    inlineRestTimers[id] = { time: simpleTimers[ex].base, interval: null };
+
+
+
+  const t = inlineRestTimers[id];
+
+  clearInterval(t.interval);
+
+  t.interval = setInterval(() => {
+
+    if (t.time > 0) {
+
+      t.time--;
+
+      document.getElementById(id).innerText = t.time;
+
+    } else {
+
+      clearInterval(t.interval);
+
+    }
+
+  }, 1000);
+
+}
+
+
+
+function pauseInlineRest(ex, i) {
+
+  const t = inlineRestTimers[`${ex}-rest-${i}`];
+
+  if (t) clearInterval(t.interval);
+
+}
+
+
+
+function resetInlineRest(ex, i) {
+
+  const id = `${ex}-rest-${i}`;
+
+  const t = inlineRestTimers[id];
+
+  if (t) {
+
+    clearInterval(t.interval);
+
+    t.time = simpleTimers[ex].base;
+
+    document.getElementById(id).innerText = t.time;
+
+  }
+
+}
+
+
+
+---
+
+
+
+â 5) AJOUT DU TIMER FINAL AUTOMATIQUE
+
+ð Toujours dans initSeriesUI(), Ã  INSÃRER aprÃ¨s le timer entre sÃ©ries, donc tout en bas de la boucle :
+
+Ajoute :
+
+// TIMER FINAL APRÃS LA DERNIÃRE SÃRIE
+
+if (i === seriesCount - 1) {
+
+  const final = document.createElement("div");
+
+  final.className = "timer-block";
+
+  final.innerHTML = `
+
+    <div class="timer-label">Repos final</div>
+
+    <div class="timer-display rest" id="${exercise}-rest-final">${simpleTimers[exercise].base}</div>
+
+    <button class="timer-btn" onclick="resetFinalRest('${exercise}')">Reset</button>
+
+  `;
+
+  container.appendChild(final);
+
+
+
+  // Quand on valide la derniÃ¨re sÃ©rie â lancer auto
+
+  btnOk.onclick = () => {
+
+    const p = parseInt(row.dataset.prevu);
+
+    recordSeries(exercise, i, p);
+
+    markSeriesDone(row, p);
+
+    startFinalRest(exercise);
+
+  };
+
+}
+
+
+
+---
+
+
+
+â 6) FONCTIONS DU TIMER FINAL
+
+ð Ã mettre aprÃ¨s les fonctions des timers entre sÃ©ries :
+
+function startFinalRest(ex) {
+
+  const id = `${ex}-rest-final`;
+
+
+
+  if (!inlineRestTimers[id])
+
+    inlineRestTimers[id] = { time: simpleTimers[ex].base, interval: null };
+
+
+
+  const t = inlineRestTimers[id];
+
+  clearInterval(t.interval);
+
+
+
+  t.interval = setInterval(() => {
+
+    if (t.time > 0) {
+
+      t.time--;
+
+      document.getElementById(id).innerText = t.time;
+
+    } else {
+
+      clearInterval(t.interval);
+
+
+
+      // Clignotement + vibration
+
+      const d = document.getElementById(id);
+
+      d.classList.add("timer-finish");
+
+      d.innerText = "Repos terminÃ© !";
+
+
+
+      if (navigator.vibrate) navigator.vibrate(300);
+
+    }
+
+  }, 1000);
+
+}
+
+
+
+function resetFinalRest(ex) {
+
+  const id = `${ex}-rest-final`;
+
+  const t = inlineRestTimers[id];
+
+  if (!t) return;
+
+  clearInterval(t.interval);
+
+  t.time = simpleTimers[ex].base;
+
+  const d = document.getElementById(id);
+
+  d.innerText = t.time;
+
+  d.classList.remove("timer-finish");
+
+}
